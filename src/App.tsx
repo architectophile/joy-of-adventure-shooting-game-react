@@ -12,7 +12,6 @@ const App: React.FC = () => {
   let meteors: Meteor[] = [];
   let bullets: Bullet[] = [];
 
-  let maxMeteorCount: number = 10;
   let lastMeteorSpawnAt: number = Date.now();
   const player: Player = new Player(width / 2, height - 100, 75, 100);
 
@@ -41,16 +40,21 @@ const App: React.FC = () => {
   useEffect(() => {
     let animationFrameId: number;
 
-    let intervalId: NodeJS.Timeout;
-
     const createBullet = () => {
       const newBullet = player.getBullet();
       bullets.push(newBullet);
       // You can also use setBullets for more React-style state management
       // setBullets(prevBullets => [...prevBullets, newBullet]);
     };
+    const bulletIntervalId = setInterval(createBullet, 50);
 
-    intervalId = setInterval(createBullet, 100); // Create a bullet every 1000ms or 1 second
+    const createMeteor = () => {
+      const random: number = randomNumber(0, width);
+      meteors.push(new Meteor(random, 0));
+      lastMeteorSpawnAt = Date.now();
+      console.log("meteor added.");
+    };
+    const meteorIntervalId = setInterval(createMeteor, 500);
 
     const gameLoop = () => {
       const canvas = canvasRef.current;
@@ -64,16 +68,6 @@ const App: React.FC = () => {
 
       player.update();
       player.draw(ctx);
-
-      const random: number = randomNumber(0, width);
-      if (
-        meteors.length < maxMeteorCount &&
-        Date.now() - lastMeteorSpawnAt > 200
-      ) {
-        meteors.push(new Meteor(random, 0));
-        lastMeteorSpawnAt = Date.now();
-        console.log("meteor added.");
-      }
 
       meteors = meteors.filter((enemy) => !enemy.dead);
       meteors.forEach((meteor) => {
@@ -94,7 +88,8 @@ const App: React.FC = () => {
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      clearInterval(intervalId);
+      clearInterval(bulletIntervalId);
+      clearInterval(meteorIntervalId);
     };
   }, []);
 

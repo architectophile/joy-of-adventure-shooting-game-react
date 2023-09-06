@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/stop-ethan-shooting-game-react/static/css/main.e6c13ad2.css",
+    "main.js": "/stop-ethan-shooting-game-react/static/js/main.b636b680.js",
+    "static/js/787.91010c74.chunk.js": "/stop-ethan-shooting-game-react/static/js/787.91010c74.chunk.js",
+    "static/media/player.png": "/stop-ethan-shooting-game-react/static/media/player.a2f6f3e36d2d3bc9d4ff.png",
+    "static/media/space.jpg": "/stop-ethan-shooting-game-react/static/media/space.033226b750f452a325ba.jpg",
+    "static/media/meteors.png": "/stop-ethan-shooting-game-react/static/media/meteors.9edd22c51c1238f1dcf7.png",
+    "index.html": "/stop-ethan-shooting-game-react/index.html",
+    "main.e6c13ad2.css.map": "/stop-ethan-shooting-game-react/static/css/main.e6c13ad2.css.map",
+    "main.b636b680.js.map": "/stop-ethan-shooting-game-react/static/js/main.b636b680.js.map",
+    "787.91010c74.chunk.js.map": "/stop-ethan-shooting-game-react/static/js/787.91010c74.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.b636b680.js"
+  ]
+}

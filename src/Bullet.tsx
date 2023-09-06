@@ -1,5 +1,5 @@
 export class Bullet {
-  static readonly BULLET_RADIUS: number = 5;
+  static readonly BULLET_RADIUS: number = 30;
   static readonly BULLET_SPEED: number = 10;
   static readonly FILL_STYLE: string = "#1F51FF";
   static readonly LINE_WIDTH: number = 5;
@@ -9,14 +9,17 @@ export class Bullet {
   static readonly bulletCtx: CanvasRenderingContext2D | null =
     Bullet.bulletCanvas.getContext("2d");
 
+  width: number = Bullet.BULLET_RADIUS * 2;
+  height: number = Bullet.BULLET_RADIUS * 2;
   dead: boolean = false;
   speed: number = Bullet.BULLET_SPEED;
   xPos: number;
   yPos: number;
+  damage: number = 1;
 
   constructor(xPos: number, yPos: number) {
     this.xPos = xPos;
-    this.yPos = yPos;
+    this.yPos = yPos - this.height / 2;
 
     if (Bullet.bulletCtx) {
       Bullet.bulletCanvas.width = Bullet.BULLET_RADIUS * 2;

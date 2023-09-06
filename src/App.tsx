@@ -4,19 +4,18 @@ import bg from "./photos/space.jpg";
 import { Meteor } from "./Meteor";
 import { Bullet } from "./Bullet";
 
+export const CANVAS_WIDTH = window.innerWidth;
+export const CANVAS_HEIGHT = window.innerHeight;
+
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  const width = CANVAS_WIDTH;
+  const height = CANVAS_HEIGHT;
 
   let meteors: Meteor[] = [];
   let bullets: Bullet[] = [];
 
-  let lastMeteorSpawnAt: number = Date.now();
-  const player: Player = new Player(width / 2, height - 100, 75, 100);
-
-  const randomNumber = (min: number, max: number): number =>
-    Math.random() * max + min;
+  const player: Player = new Player(width / 2, height - 80);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,10 +48,7 @@ const App: React.FC = () => {
     const bulletIntervalId = setInterval(createBullet, 50);
 
     const createMeteor = () => {
-      const random: number = randomNumber(0, width);
-      meteors.push(new Meteor(random, 0));
-      lastMeteorSpawnAt = Date.now();
-      console.log("meteor added.");
+      meteors.push(Meteor.createMeteor(CANVAS_WIDTH));
     };
     const meteorIntervalId = setInterval(createMeteor, 500);
 
@@ -105,7 +101,9 @@ const App: React.FC = () => {
     const handleTouchMove = (e: TouchEvent) => {
       e.preventDefault();
       const touch = e.touches[0];
-      player.handleTouchMove(touch.clientX, touch.clientY);
+      if (touch.clientX > 0 && touch.clientX < CANVAS_WIDTH) {
+        player.handleTouchMove(touch.clientX);
+      }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {

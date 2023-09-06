@@ -1,9 +1,11 @@
 import Bullet from "./Bullet";
 import img from "./photos/player.png";
 
+const PLAYER_FILL_STYLE_DEFAULT = "#5F616F";
+
 export class Player {
-  width: number;
-  height: number;
+  width: number = 80;
+  height: number = 80;
   dead: boolean = false;
   health: number = 100;
   ammo: number = 100;
@@ -16,15 +18,10 @@ export class Player {
   image: HTMLImageElement;
   isDragging: boolean = false;
 
-  constructor(xPos: number, yPos: number, width: number, height: number) {
-    console.log(
-      `xPos: ${xPos}, yPos: ${yPos}, width: ${width}, height: ${height}`
-    );
+  constructor(xPos: number, yPos: number) {
+    console.log(`xPos: ${xPos}, yPos: ${yPos}`);
     this.xPos = xPos;
     this.yPos = yPos;
-
-    this.width = width;
-    this.height = height;
 
     this.image = new Image();
     this.image.src = img;
@@ -42,7 +39,7 @@ export class Player {
     }
   }
 
-  handleTouchMove(x: number, y: number) {
+  handleTouchMove(x: number) {
     if (this.isDragging) {
       this.xPos = x; // Center the player image on the touch point
     }
@@ -79,11 +76,6 @@ export class Player {
       });
     };
 
-    if (this.xPos < -10 || this.yPos > 890) {
-      this.dead = true;
-      gameOver(this.score);
-    }
-
     if (this.health <= 0) {
       this.dead = true;
       gameOver(this.score);
@@ -91,19 +83,23 @@ export class Player {
   };
 
   getBullet = (): Bullet => {
-    return new Bullet(this.xPos, this.yPos);
+    return new Bullet(this.xPos, this.yPos - this.height / 2);
   };
 
   draw = (ctx: CanvasRenderingContext2D): void => {
-    if (this.image.complete) {
-      ctx.drawImage(
-        this.image,
-        this.xPos - this.width / 2,
-        this.yPos - this.height / 2,
-        this.width,
-        this.height
-      );
-    }
+    ctx.beginPath();
+    ctx.arc(this.xPos, this.yPos, this.width / 2, 0, 2 * Math.PI);
+    ctx.fillStyle = PLAYER_FILL_STYLE_DEFAULT;
+    ctx.fill();
+    // if (this.image.complete) {
+    //   ctx.drawImage(
+    //     this.image,
+    //     this.xPos - this.width / 2,
+    //     this.yPos - this.height / 2,
+    //     this.width,
+    //     this.height
+    //   );
+    // }
 
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";

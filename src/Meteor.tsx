@@ -1,32 +1,50 @@
+import { CANVAS_HEIGHT } from "./App";
 import img from "./photos/meteors.png";
+import { getRandomNumber, isTwoObjectsHit } from "./utils";
 
-const METEOR_WIDTH = 75;
-const METEOR_HEIGHT = 100;
+const METEOR_WIDTH = 20;
+const METEOR_HEIGHT = 20;
+const METEOR_FILL_STYLE_HIT_BY_BULLET = "#e1261F";
+const METEOR_FILL_STYLE_HIT_BY_PLAYER = "#3145d1";
+const METEOR_FILL_STYLE_DEFAULT = "#2Fd11F";
 
 interface Player {
-  increaseScore: () => void;
-  deductHealth: () => void;
+  width: number;
+  height: number;
   xPos: number;
   yPos: number;
+  increaseScore: () => void;
+  deductHealth: () => void;
 }
 
 interface Bullet {
+  width: number;
+  height: number;
   xPos: number;
   yPos: number;
   dead: boolean;
+  damage: number;
 }
 
 export class Meteor {
   static readonly METEOR_RADIUS: number = 5;
-  static readonly METEOR_SPEED: number = 2;
-  static readonly FILL_STYLE: string = "#1F51FF";
+  static readonly METEOR_SPEED_X: number = 0.5;
+  static readonly METEOR_SPEED_Y: number = 2;
   static readonly LINE_WIDTH: number = 5;
 
+  width: number = METEOR_WIDTH;
+  height: number = METEOR_HEIGHT;
   image = new Image();
-  speed: number = Meteor.METEOR_SPEED;
+  xSpeed: number = Meteor.METEOR_SPEED_X;
+  ySpeed: number = Meteor.METEOR_SPEED_Y;
   dead: boolean = false;
   xPos: number;
   yPos: number;
+  health: number = 5;
+  color: string = METEOR_FILL_STYLE_DEFAULT;
+  bulletHitTimeout: NodeJS.Timeout | null = null;
+  playerHitTimeout: NodeJS.Timeout | null = null;
+  isStunned: boolean = false;
 
   constructor(xPos: number, yPos: number) {
     this.image.src = img;
@@ -34,8 +52,36 @@ export class Meteor {
     this.yPos = yPos;
   }
 
+  // static factory method for Meteor
+  static createMeteor = (canvasWidth: number): Meteor => {
+    return new Meteor(
+      getRandomNumber(METEOR_WIDTH / 2, canvasWidth - METEOR_WIDTH / 2),
+      0
+    );
+  };
+
+  private hitByBullet = (): void => {
+    if (this.bulletHitTimeout) clearTimeout(this.bulletHitTimeout);
+    this.color = METEOR_FILL_STYLE_HIT_BY_BULLET;
+    this.bulletHitTimeout = setTimeout(() => {
+      this.color = METEOR_FILL_STYLE_DEFAULT;
+    }, 10);
+  };
+
+  private hitByPlayer = (): void => {
+    console.log("hit by player");
+    this.isStunned = true;
+    if (this.bulletHitTimeout) clearTimeout(this.bulletHitTimeout);
+    if (this.playerHitTimeout) clearTimeout(this.playerHitTimeout);
+    this.color = METEOR_FILL_STYLE_HIT_BY_PLAYER;
+    this.bulletHitTimeout = setTimeout(() => {
+      this.isStunned = false;
+      this.color = METEOR_FILL_STYLE_DEFAULT;
+    }, 3000);
+  };
+
   isOutOfScreen = (): boolean | undefined => {
-    if (this.yPos > 550) {
+    if (this.yPos > CANVAS_HEIGHT) {
       return true;
     }
   };
@@ -43,31 +89,32 @@ export class Meteor {
   update = (player: Player, bullets: Bullet[]): void => {
     if (this.dead) return;
 
-    this.yPos += this.speed;
+    this.yPos += this.ySpeed;
 
+    // Check if meteor is out of screen
     if (!this.dead && this.isOutOfScreen()) {
       this.dead = true;
+      // sound.play('passing');
     }
 
+    // Check if meteor is hit by bullet
     if (!this.dead) {
       bullets.forEach((bullet) => {
-        if (
-          Math.abs(bullet.xPos - this.xPos) < 75 &&
-          Math.abs(bullet.yPos - this.yPos) < 100
-        ) {
+        if (isTwoObjectsHit(bullet, this)) {
           player.increaseScore();
-          this.dead = true;
+          this.health -= bullet.damage;
+          if (!this.isStunned) this.hitByBullet();
+          if (this.health <= 0) this.dead = true;
           bullet.dead = true;
         }
       });
 
-      if (!this.dead) {
-        if (
-          Math.abs(player.xPos - this.xPos) < 65 &&
-          Math.abs(player.yPos - this.yPos) < 90
-        ) {
-          this.dead = true;
-          player.deductHealth();
+      // Check if player is hit
+      if (!this.dead && !this.isStunned) {
+        if (isTwoObjectsHit(player, this)) {
+          this.hitByPlayer();
+          // this.dead = true;
+          // player.deductHealth();
         }
       }
     }
@@ -75,23 +122,16 @@ export class Meteor {
 
   draw = (ctx: CanvasRenderingContext2D): void => {
     ctx.beginPath();
-    ctx.arc(
-      this.xPos + METEOR_WIDTH / 2,
-      this.yPos + METEOR_HEIGHT / 2,
-      20,
-      0,
-      2 * Math.PI
-    );
+    ctx.arc(this.xPos, this.yPos, this.width / 2, 0, 2 * Math.PI);
+    ctx.fillStyle = this.color;
     ctx.fill();
-    // if (this.image.complete) {
-    //   ctx.drawImage(
-    //     this.image,
-    //     this.xPos,
-    //     this.yPos,
-    //     METEOR_WIDTH,
-    //     METEOR_HEIGHT
-    //   );
-    // }
+    // ctx.drawImage(
+    //   this.image,
+    //   this.xPos - METEOR_WIDTH / 2,
+    //   this.yPos - METEOR_HEIGHT / 2,
+    //   METEOR_WIDTH,
+    //   METEOR_HEIGHT
+    // );
   };
 }
 

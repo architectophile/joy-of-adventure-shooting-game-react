@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Player } from "./Player";
 import bg from "./photos/space.jpg";
 import { Meteor } from "./Meteor";
@@ -11,115 +11,144 @@ const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const width = CANVAS_WIDTH;
   const height = CANVAS_HEIGHT;
+  const [gameStarted, setGameStarted] = useState(false);
 
   let meteors: Meteor[] = [];
   let bullets: Bullet[] = [];
 
   const player: Player = new Player(width / 2, height - 80);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const setCanvasSize = () => {
-      canvas.width = width;
-      canvas.height = height; // Adjust based on your needs
-    };
-
-    setCanvasSize();
-
-    // Handle window resize
-    window.addEventListener("resize", setCanvasSize);
-
-    return () => {
-      window.removeEventListener("resize", setCanvasSize);
-    };
-  }, []);
+  const startGame = () => {
+    setGameStarted(true);
+  };
 
   useEffect(() => {
-    let animationFrameId: number;
-
-    const createBullet = () => {
-      const newBullet = player.getBullet();
-      bullets.push(newBullet);
-      // You can also use setBullets for more React-style state management
-      // setBullets(prevBullets => [...prevBullets, newBullet]);
-    };
-    const bulletIntervalId = setInterval(createBullet, 50);
-
-    const createMeteor = () => {
-      meteors.push(Meteor.createMeteor(CANVAS_WIDTH));
-    };
-    const meteorIntervalId = setInterval(createMeteor, 500);
-
-    const gameLoop = () => {
+    if (gameStarted) {
       const canvas = canvasRef.current;
-      const ctx = canvas?.getContext("2d");
+      if (!canvas) return;
 
-      if (!ctx) {
-        return;
-      }
-      const { width, height } = canvas as HTMLCanvasElement;
-      ctx.clearRect(0, 0, width, height);
+      const setCanvasSize = () => {
+        canvas.width = CANVAS_WIDTH;
+        canvas.height = CANVAS_HEIGHT; // Adjust based on your needs
+      };
 
-      player.update();
-      player.draw(ctx);
+      setCanvasSize();
 
-      meteors = meteors.filter((enemy) => !enemy.dead);
-      meteors.forEach((meteor) => {
-        meteor.update(player, bullets);
-        meteor.draw(ctx);
-      });
+      // Handle window resize
+      window.addEventListener("resize", setCanvasSize);
 
-      bullets = bullets.filter((bullet) => !bullet.dead);
-      bullets.forEach((bullet) => {
-        bullet.update();
-        bullet.draw(ctx);
-      });
-
-      animationFrameId = requestAnimationFrame(gameLoop);
-    };
-
-    gameLoop();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      clearInterval(bulletIntervalId);
-      clearInterval(meteorIntervalId);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener("resize", setCanvasSize);
+      };
+    }
+  }, [gameStarted]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (gameStarted) {
+      let animationFrameId: number;
 
-    const handleTouchStart = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      player.handleTouchStart(touch.clientX, touch.clientY);
-    };
+      const createBullet = () => {
+        const newBullet = player.getBullet();
+        bullets.push(newBullet);
+        // You can also use setBullets for more React-style state management
+        // setBullets(prevBullets => [...prevBullets, newBullet]);
+      };
+      const bulletIntervalId = setInterval(createBullet, 50);
 
-    const handleTouchMove = (e: TouchEvent) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      if (touch.clientX > 0 && touch.clientX < CANVAS_WIDTH) {
-        player.handleTouchMove(touch.clientX);
-      }
-    };
+      const createMeteor = () => {
+        meteors.push(Meteor.createMeteor(CANVAS_WIDTH));
+        console.log("meteor is created");
+      };
+      const meteorIntervalId = setInterval(createMeteor, 500);
 
-    const handleTouchEnd = (e: TouchEvent) => {
-      player.handleTouchEnd();
-    };
+      const gameLoop = () => {
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
 
-    canvas.addEventListener("touchstart", handleTouchStart);
-    canvas.addEventListener("touchmove", handleTouchMove);
-    canvas.addEventListener("touchend", handleTouchEnd);
+        if (!ctx) {
+          return;
+        }
+        const { width, height } = canvas as HTMLCanvasElement;
+        ctx.clearRect(0, 0, width, height);
 
-    return () => {
-      canvas.removeEventListener("touchstart", handleTouchStart);
-      canvas.removeEventListener("touchmove", handleTouchMove);
-      canvas.removeEventListener("touchend", handleTouchEnd);
-    };
-  }, []);
+        player.update();
+        player.draw(ctx);
+
+        meteors = meteors.filter((enemy) => !enemy.dead);
+        meteors.forEach((meteor) => {
+          meteor.update(player, bullets);
+          meteor.draw(ctx);
+        });
+
+        bullets = bullets.filter((bullet) => !bullet.dead);
+        bullets.forEach((bullet) => {
+          bullet.update();
+          bullet.draw(ctx);
+        });
+
+        animationFrameId = requestAnimationFrame(gameLoop);
+      };
+
+      gameLoop();
+
+      return () => {
+        cancelAnimationFrame(animationFrameId);
+        clearInterval(bulletIntervalId);
+        clearInterval(meteorIntervalId);
+      };
+    }
+  }, [gameStarted]);
+
+  useEffect(() => {
+    if (gameStarted) {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+
+      const handleTouchStart = (e: TouchEvent) => {
+        const touch = e.touches[0];
+        player.handleTouchStart(touch.clientX, touch.clientY);
+      };
+
+      const handleTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        if (touch.clientX > 0 && touch.clientX < CANVAS_WIDTH) {
+          player.handleTouchMove(touch.clientX);
+        }
+      };
+
+      const handleTouchEnd = (e: TouchEvent) => {
+        player.handleTouchEnd();
+      };
+
+      canvas.addEventListener("touchstart", handleTouchStart);
+      canvas.addEventListener("touchmove", handleTouchMove);
+      canvas.addEventListener("touchend", handleTouchEnd);
+
+      return () => {
+        canvas.removeEventListener("touchstart", handleTouchStart);
+        canvas.removeEventListener("touchmove", handleTouchMove);
+        canvas.removeEventListener("touchend", handleTouchEnd);
+      };
+    }
+  }, [gameStarted]);
+
+  if (!gameStarted) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+          height: "100vh",
+          flexDirection: "row",
+        }}
+      >
+        <button onClick={startGame}>Start</button>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -127,7 +156,8 @@ const App: React.FC = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100%",
+        width: "100vw",
+        height: "100vh",
         flexDirection: "row",
       }}
     >
@@ -137,7 +167,6 @@ const App: React.FC = () => {
         style={{
           backgroundImage: `url(${bg})`,
           backgroundSize: "cover",
-          border: "2px solid #000000",
         }}
       />
     </div>

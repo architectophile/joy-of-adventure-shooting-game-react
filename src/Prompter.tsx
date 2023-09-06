@@ -9,7 +9,7 @@ export class Prompter {
     if (!this.message) return;
     ctx.font = "32px Arial";
     ctx.fillStyle = "white";
-    // ctx.textAlign = "center";
+    ctx.textAlign = "center";
     ctx.fillText(this.message, 200, 300);
   };
 }

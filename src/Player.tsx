@@ -104,6 +104,7 @@ export class Player {
 
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
+    ctx.textAlign = "left";
     ctx.fillText(
       `Health: ${this.health}`,
       CANVAS_WIDTH - 95,
@@ -112,6 +113,7 @@ export class Player {
 
     ctx.font = "16px Arial";
     ctx.fillStyle = "lightgreen";
+    ctx.textAlign = "left";
     ctx.fillText(`Score: ${this.score}`, 8, 25);
   };
 }

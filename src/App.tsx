@@ -4,6 +4,7 @@ import bg from "./photos/space.jpg";
 import { Meteor } from "./Meteor";
 import { Bullet } from "./Bullet";
 import { Prompter } from "./Prompter";
+import bulletSound from "./sound/bullet-sound.mp3";
 
 export const CANVAS_WIDTH = window.innerWidth;
 export const CANVAS_HEIGHT = window.innerHeight;
@@ -48,12 +49,19 @@ const App: React.FC = () => {
     if (gameStarted) {
       let animationFrameId: number;
 
+      let bulletSoundIntervalId: NodeJS.Timeout | undefined = undefined;
       let bulletIntervalId: NodeJS.Timeout | undefined = undefined;
       let meteorIntervalId: NodeJS.Timeout | undefined = undefined;
+
+      const playBulletSound = () => {
+        const audio = new Audio(bulletSound);
+        audio.play();
+      };
 
       const createBullet = () => {
         const newBullet = player.getBullet();
         bullets.push(newBullet);
+        playBulletSound();
       };
 
       const createMeteor = () => {
@@ -77,7 +85,8 @@ const App: React.FC = () => {
         await new Promise((r) => setTimeout(r, 1000));
         prompter.setMessage(null);
 
-        bulletIntervalId = setInterval(createBullet, 40);
+        // bulletSoundIntervalId = setInterval(playBulletSound, 1000);
+        bulletIntervalId = setInterval(createBullet, 80);
         meteorIntervalId = setInterval(createMeteor, 500);
       }, 0);
 
@@ -115,6 +124,7 @@ const App: React.FC = () => {
 
       return () => {
         cancelAnimationFrame(animationFrameId);
+        clearInterval(bulletSoundIntervalId);
         clearInterval(bulletIntervalId);
         clearInterval(meteorIntervalId);
       };

@@ -53,7 +53,7 @@ const App: React.FC = () => {
         // You can also use setBullets for more React-style state management
         // setBullets(prevBullets => [...prevBullets, newBullet]);
       };
-      const bulletIntervalId = setInterval(createBullet, 50);
+      const bulletIntervalId = setInterval(createBullet, 40);
 
       const createMeteor = () => {
         meteors.push(Meteor.createMeteor(CANVAS_WIDTH));

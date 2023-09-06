@@ -102,7 +102,7 @@ export class Player {
     //   );
     // }
 
-    ctx.font = "16px Arial";
+    ctx.font = "18px ArcadeClassic";
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
     ctx.fillText(
@@ -111,7 +111,7 @@ export class Player {
       CANVAS_HEIGHT - 15
     );
 
-    ctx.font = "16px Arial";
+    ctx.font = "18px ArcadeClassic";
     ctx.fillStyle = "lightgreen";
     ctx.textAlign = "left";
     ctx.fillText(`Score: ${this.score}`, 8, 25);

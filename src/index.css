@@ -1,3 +1,17 @@
+@font-face {
+  font-family: "Invasion2000";
+  src: url("./assets/fonts/INVASION2000.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ArcadeClassic";
+  src: url("./assets/fonts/ARCADECLASSIC.TTF") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -6,6 +20,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(142, 28, 28);
   /* set background, overflow, or other global styles if you wish */
 }
 

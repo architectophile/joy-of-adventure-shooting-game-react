@@ -40,7 +40,7 @@ export class Meteor {
   dead: boolean = false;
   xPos: number;
   yPos: number;
-  health: number = 10;
+  health: number = 4;
   color: string = METEOR_FILL_STYLE_DEFAULT;
   bulletHitTimeout: NodeJS.Timeout | null = null;
   playerHitTimeout: NodeJS.Timeout | null = null;

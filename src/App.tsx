@@ -4,16 +4,22 @@ import bg from "./photos/space.jpg";
 import { Meteor } from "./Meteor";
 import { Bullet } from "./Bullet";
 import { Prompter } from "./Prompter";
-import bulletSound from "./sound/bullet-sound.mp3";
+import useSound from "use-sound";
+
+import bulletSfx from "./sound/bullet-sound.mp3";
+import bgm from "./sound/bgm.mp3";
 
 export const CANVAS_WIDTH = window.innerWidth;
 export const CANVAS_HEIGHT = window.innerHeight;
+
+const bgmAudio = new Audio(bgm);
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const width = CANVAS_WIDTH;
   const height = CANVAS_HEIGHT;
   const [gameStarted, setGameStarted] = useState(false);
+  const [playBulletSound] = useSound(bulletSfx);
 
   let meteors: Meteor[] = [];
   let bullets: Bullet[] = [];
@@ -53,11 +59,6 @@ const App: React.FC = () => {
       let bulletIntervalId: NodeJS.Timeout | undefined = undefined;
       let meteorIntervalId: NodeJS.Timeout | undefined = undefined;
 
-      const playBulletSound = () => {
-        const audio = new Audio(bulletSound);
-        audio.play();
-      };
-
       const createBullet = () => {
         const newBullet = player.getBullet();
         bullets.push(newBullet);
@@ -70,6 +71,7 @@ const App: React.FC = () => {
       };
 
       setTimeout(async () => {
+        bgmAudio.play();
         await new Promise((r) => setTimeout(r, 1000));
         prompter.setMessage("3");
 
@@ -169,15 +171,38 @@ const App: React.FC = () => {
     return (
       <div
         style={{
+          backgroundColor: "black",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           width: "100vw",
           height: "100vh",
           flexDirection: "row",
+          fontFamily: "ArcadeClassic, fallback, sans-serif",
         }}
       >
-        <button onClick={startGame}>Start</button>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "Invasion2000, fallback, sans-serif",
+          }}
+        >
+          <span style={{ color: "white", fontSize: 42 }}>Stop Ethan</span>
+          <button
+            style={{
+              marginTop: 32,
+              padding: 10,
+              fontSize: 32,
+              fontFamily: "ArcadeClassic, fallback, sans-serif",
+            }}
+            onClick={startGame}
+          >
+            Start
+          </button>
+        </div>
       </div>
     );
   }

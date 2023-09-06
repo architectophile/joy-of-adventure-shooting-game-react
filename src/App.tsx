@@ -3,6 +3,7 @@ import { Player } from "./Player";
 import bg from "./photos/space.jpg";
 import { Meteor } from "./Meteor";
 import { Bullet } from "./Bullet";
+import { Prompter } from "./Prompter";
 
 export const CANVAS_WIDTH = window.innerWidth;
 export const CANVAS_HEIGHT = window.innerHeight;
@@ -16,6 +17,7 @@ const App: React.FC = () => {
   let meteors: Meteor[] = [];
   let bullets: Bullet[] = [];
 
+  const prompter = new Prompter();
   const player: Player = new Player(width / 2, height - 80);
 
   const startGame = () => {
@@ -34,7 +36,6 @@ const App: React.FC = () => {
 
       setCanvasSize();
 
-      // Handle window resize
       window.addEventListener("resize", setCanvasSize);
 
       return () => {
@@ -47,19 +48,38 @@ const App: React.FC = () => {
     if (gameStarted) {
       let animationFrameId: number;
 
+      let bulletIntervalId: NodeJS.Timeout | undefined = undefined;
+      let meteorIntervalId: NodeJS.Timeout | undefined = undefined;
+
       const createBullet = () => {
         const newBullet = player.getBullet();
         bullets.push(newBullet);
-        // You can also use setBullets for more React-style state management
-        // setBullets(prevBullets => [...prevBullets, newBullet]);
       };
-      const bulletIntervalId = setInterval(createBullet, 40);
 
       const createMeteor = () => {
         meteors.push(Meteor.createMeteor(CANVAS_WIDTH));
         console.log("meteor is created");
       };
-      const meteorIntervalId = setInterval(createMeteor, 500);
+
+      setTimeout(async () => {
+        await new Promise((r) => setTimeout(r, 1000));
+        prompter.setMessage("3");
+
+        await new Promise((r) => setTimeout(r, 1000));
+        prompter.setMessage("2");
+
+        await new Promise((r) => setTimeout(r, 1000));
+        prompter.setMessage("1");
+
+        await new Promise((r) => setTimeout(r, 1000));
+        prompter.setMessage("Start!");
+
+        await new Promise((r) => setTimeout(r, 1000));
+        prompter.setMessage(null);
+
+        bulletIntervalId = setInterval(createBullet, 40);
+        meteorIntervalId = setInterval(createMeteor, 500);
+      }, 0);
 
       const gameLoop = () => {
         const canvas = canvasRef.current;
@@ -71,6 +91,7 @@ const App: React.FC = () => {
         const { width, height } = canvas as HTMLCanvasElement;
         ctx.clearRect(0, 0, width, height);
 
+        prompter.draw(ctx);
         player.update();
         player.draw(ctx);
 
@@ -90,6 +111,7 @@ const App: React.FC = () => {
       };
 
       gameLoop();
+      console.log("gameLoop started");
 
       return () => {
         cancelAnimationFrame(animationFrameId);

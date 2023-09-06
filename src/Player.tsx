@@ -1,3 +1,4 @@
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./App";
 import Bullet from "./Bullet";
 import img from "./photos/player.png";
 
@@ -103,11 +104,15 @@ export class Player {
 
     ctx.font = "16px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText(`Health: ${this.health}`, 950 - 95, 550 - 15);
+    ctx.fillText(
+      `Health: ${this.health}`,
+      CANVAS_WIDTH - 95,
+      CANVAS_HEIGHT - 15
+    );
 
     ctx.font = "16px Arial";
     ctx.fillStyle = "lightgreen";
-    ctx.fillText(`Score: ${this.score}`, 0, 25);
+    ctx.fillText(`Score: ${this.score}`, 8, 25);
   };
 }
 

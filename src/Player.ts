@@ -1,12 +1,16 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./App";
-import Bullet from "./Bullet";
+import Bullet from "./bullet/Bullet";
 import img from "./photos/player.png";
+import { Weapon } from "./weapons/Weapon";
 
 const PLAYER_FILL_STYLE_DEFAULT = "#5F616F";
+const PLAYER_WIDTH_RATE = 0.1;
+const PLAYER_HEIGHT_RATE = 0.1;
 
 export class Player {
-  width: number = 80;
-  height: number = 80;
+  name: string;
+  width: number;
+  height: number;
   dead: boolean = false;
   health: number = 100;
   ammo: number = 100;
@@ -18,15 +22,35 @@ export class Player {
   yPos: number;
   image: HTMLImageElement;
   isDragging: boolean = false;
+  canvas: HTMLCanvasElement;
+  private readonly weapons: Map<string, Weapon>;
 
-  constructor(xPos: number, yPos: number) {
-    console.log(`xPos: ${xPos}, yPos: ${yPos}`);
-    this.xPos = xPos;
-    this.yPos = yPos;
+  constructor(
+    name: string,
+    canvas: HTMLCanvasElement,
+    weapons: Map<string, Weapon>
+  ) {
+    this.name = name;
+    this.canvas = canvas;
+    const { width, height } = canvas;
+    this.width = width * PLAYER_WIDTH_RATE;
+    this.height = this.width;
+    this.xPos = width / 2;
+    this.yPos = height - 100;
 
     this.image = new Image();
     this.image.src = img;
+
+    this.weapons = weapons;
   }
+
+  setWeapon = (weapon: Weapon): void => {
+    this.weapons.set(weapon.name, weapon);
+  };
+
+  getWeapons = (): Map<string, Weapon> => {
+    return this.weapons;
+  };
 
   handleTouchStart(x: number, y: number) {
     console.log(
@@ -81,10 +105,6 @@ export class Player {
       this.dead = true;
       gameOver(this.score);
     }
-  };
-
-  getBullet = (): Bullet => {
-    return new Bullet(this.xPos, this.yPos - this.height / 2);
   };
 
   draw = (ctx: CanvasRenderingContext2D): void => {

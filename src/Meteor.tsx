@@ -40,7 +40,7 @@ export class Meteor {
   dead: boolean = false;
   xPos: number;
   yPos: number;
-  health: number = 4;
+  health: number = 30;
   color: string = METEOR_FILL_STYLE_DEFAULT;
   bulletHitTimeout: NodeJS.Timeout | null = null;
   playerHitTimeout: NodeJS.Timeout | null = null;
@@ -63,9 +63,11 @@ export class Meteor {
   private hitByBullet = (): void => {
     if (this.bulletHitTimeout) clearTimeout(this.bulletHitTimeout);
     this.color = METEOR_FILL_STYLE_HIT_BY_BULLET;
-    this.ySpeed = Meteor.METEOR_SPEED_Y * 0.7;
-    this.bulletHitTimeout = setTimeout(() => {
+    this.ySpeed = Meteor.METEOR_SPEED_Y * 0.2;
+    this.bulletHitTimeout = setTimeout(async () => {
       this.color = METEOR_FILL_STYLE_DEFAULT;
+      await new Promise((r) => setTimeout(r, 30));
+      this.ySpeed = Meteor.METEOR_SPEED_Y;
     }, 10);
   };
 

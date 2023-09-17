@@ -1,173 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Player } from "./Player";
-import bg from "./photos/space.jpg";
-import { Meteor } from "./Meteor";
-import { Bullet } from "./Bullet";
-import { Prompter } from "./Prompter";
-import useSound from "use-sound";
+import PlayScreen from "./PlayScreen";
 
-import bulletSfx from "./sound/bullet-sound.mp3";
-import bgm from "./sound/bgm.mp3";
+export type GameStatus = "intro" | "start" | "end" | "pause";
 
 export const CANVAS_WIDTH = window.innerWidth;
 export const CANVAS_HEIGHT = window.innerHeight;
 
-const bgmAudio = new Audio(bgm);
+const App: React.FC = (): JSX.Element => {
+  console.log(
+    "App.tsx width and height: ",
+    window.innerWidth,
+    window.innerHeight
+  );
+  const [gameStatus, setGameStatus] = useState<GameStatus>("intro");
 
-const App: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const width = CANVAS_WIDTH;
-  const height = CANVAS_HEIGHT;
-  const [gameStarted, setGameStarted] = useState(false);
-  const [playBulletSound] = useSound(bulletSfx);
-
-  let meteors: Meteor[] = [];
-  let bullets: Bullet[] = [];
-
-  const prompter = new Prompter();
-  const player: Player = new Player(width / 2, height - 80);
-
-  const startGame = () => {
-    setGameStarted(true);
+  const endGame = () => {
+    setGameStatus("end");
   };
 
-  useEffect(() => {
-    if (gameStarted) {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+  const startGame = () => {
+    setGameStatus("start");
+  };
 
-      const setCanvasSize = () => {
-        canvas.width = CANVAS_WIDTH;
-        canvas.height = CANVAS_HEIGHT; // Adjust based on your needs
-      };
-
-      setCanvasSize();
-
-      window.addEventListener("resize", setCanvasSize);
-
-      return () => {
-        window.removeEventListener("resize", setCanvasSize);
-      };
-    }
-  }, [gameStarted]);
-
-  useEffect(() => {
-    if (gameStarted) {
-      let animationFrameId: number;
-
-      let bulletSoundIntervalId: NodeJS.Timeout | undefined = undefined;
-      let bulletIntervalId: NodeJS.Timeout | undefined = undefined;
-      let meteorIntervalId: NodeJS.Timeout | undefined = undefined;
-
-      const createBullet = () => {
-        const newBullet = player.getBullet();
-        bullets.push(newBullet);
-        playBulletSound();
-      };
-
-      const createMeteor = () => {
-        meteors.push(Meteor.createMeteor(CANVAS_WIDTH));
-        console.log("meteor is created");
-      };
-
-      setTimeout(async () => {
-        bgmAudio.play();
-        await new Promise((r) => setTimeout(r, 1000));
-        prompter.setMessage("3");
-
-        await new Promise((r) => setTimeout(r, 1000));
-        prompter.setMessage("2");
-
-        await new Promise((r) => setTimeout(r, 1000));
-        prompter.setMessage("1");
-
-        await new Promise((r) => setTimeout(r, 1000));
-        prompter.setMessage("Start!");
-
-        await new Promise((r) => setTimeout(r, 1000));
-        prompter.setMessage(null);
-
-        // bulletSoundIntervalId = setInterval(playBulletSound, 1000);
-        bulletIntervalId = setInterval(createBullet, 80);
-        meteorIntervalId = setInterval(createMeteor, 500);
-      }, 0);
-
-      const gameLoop = () => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext("2d");
-
-        if (!ctx) {
-          return;
-        }
-        const { width, height } = canvas as HTMLCanvasElement;
-        ctx.clearRect(0, 0, width, height);
-
-        prompter.draw(ctx);
-        player.update();
-        player.draw(ctx);
-
-        meteors = meteors.filter((enemy) => !enemy.dead);
-        meteors.forEach((meteor) => {
-          meteor.update(player, bullets);
-          meteor.draw(ctx);
-        });
-
-        bullets = bullets.filter((bullet) => !bullet.dead);
-        bullets.forEach((bullet) => {
-          bullet.update();
-          bullet.draw(ctx);
-        });
-
-        animationFrameId = requestAnimationFrame(gameLoop);
-      };
-
-      gameLoop();
-      console.log("gameLoop started");
-
-      return () => {
-        cancelAnimationFrame(animationFrameId);
-        clearInterval(bulletSoundIntervalId);
-        clearInterval(bulletIntervalId);
-        clearInterval(meteorIntervalId);
-      };
-    }
-  }, [gameStarted]);
-
-  useEffect(() => {
-    if (gameStarted) {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-
-      const handleTouchStart = (e: TouchEvent) => {
-        const touch = e.touches[0];
-        player.handleTouchStart(touch.clientX, touch.clientY);
-      };
-
-      const handleTouchMove = (e: TouchEvent) => {
-        e.preventDefault();
-        const touch = e.touches[0];
-        if (touch.clientX > 0 && touch.clientX < CANVAS_WIDTH) {
-          player.handleTouchMove(touch.clientX);
-        }
-      };
-
-      const handleTouchEnd = (e: TouchEvent) => {
-        player.handleTouchEnd();
-      };
-
-      canvas.addEventListener("touchstart", handleTouchStart);
-      canvas.addEventListener("touchmove", handleTouchMove);
-      canvas.addEventListener("touchend", handleTouchEnd);
-
-      return () => {
-        canvas.removeEventListener("touchstart", handleTouchStart);
-        canvas.removeEventListener("touchmove", handleTouchMove);
-        canvas.removeEventListener("touchend", handleTouchEnd);
-      };
-    }
-  }, [gameStarted]);
-
-  if (!gameStarted) {
+  if (gameStatus === "intro") {
     return (
       <div
         style={{
@@ -190,7 +45,7 @@ const App: React.FC = () => {
             fontFamily: "Invasion2000, fallback, sans-serif",
           }}
         >
-          <span style={{ color: "white", fontSize: 42 }}>Stop Ethan</span>
+          <span style={{ color: "white", fontSize: 32 }}>Joy of Adventure</span>
           <button
             style={{
               marginTop: 32,
@@ -205,29 +60,47 @@ const App: React.FC = () => {
         </div>
       </div>
     );
+  } else if (gameStatus === "end") {
+    return (
+      <div
+        style={{
+          backgroundColor: "black",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+          height: "100vh",
+          flexDirection: "row",
+          fontFamily: "ArcadeClassic, fallback, sans-serif",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "Invasion2000, fallback, sans-serif",
+          }}
+        >
+          <span style={{ color: "white", fontSize: 42 }}>Game Over</span>
+          <button
+            style={{
+              marginTop: 32,
+              padding: 10,
+              fontSize: 32,
+              fontFamily: "ArcadeClassic, fallback, sans-serif",
+            }}
+            onClick={startGame}
+          >
+            Restart
+          </button>
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100vw",
-        height: "100vh",
-        flexDirection: "row",
-      }}
-    >
-      <canvas
-        ref={canvasRef}
-        id="myCanvas"
-        style={{
-          backgroundImage: `url(${bg})`,
-          backgroundSize: "cover",
-        }}
-      />
-    </div>
-  );
+  return <PlayScreen gameStatus={gameStatus} setGameStatus={setGameStatus} />;
 };
 
 export default App;

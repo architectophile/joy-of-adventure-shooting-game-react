@@ -15,11 +15,16 @@ export class Gun extends Weapon {
     this.bulletFactory = bulletFactory;
   }
 
-  getBullet = (player: Player): Bullet => {
-    return this.bulletFactory.getBullet(
+  createBullet = (player: Player): Bullet => {
+    return this.bulletFactory.createBullet(
       player,
       player.xPos,
       player.yPos - player.height / 2
     );
+  };
+
+  playBulletSound = (): void => {
+    this.bulletFactory.playBulletSound();
+    return;
   };
 }

@@ -1,11 +1,12 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./App";
 import Bullet from "./bullet/Bullet";
+import Meteor from "./meteors/Meteor";
 import img from "./photos/player.png";
 import { Weapon } from "./weapons/Weapon";
 
 const PLAYER_FILL_STYLE_DEFAULT = "#5F616F";
-const PLAYER_WIDTH_RATE = 0.1;
-const PLAYER_HEIGHT_RATE = 0.1;
+const PLAYER_WIDTH_RATE = 0.2;
+const PLAYER_HEIGHT_RATE = 0.2;
 
 export class Player {
   name: string;
@@ -74,12 +75,20 @@ export class Player {
     this.isDragging = false;
   }
 
-  deductHealth = (): void => {
-    this.health -= 10;
+  hitByMeteor = (meteor: Meteor): void => {
+    console.log("hit by meteor");
   };
 
-  increaseScore = (): void => {
+  hitMeteorByBullet = (meteor: Meteor): void => {
     this.score += 10;
+  };
+
+  killMeteorByBullet = (meteor: Meteor): void => {
+    this.score += 10;
+  };
+
+  deductHealth = (): void => {
+    this.health -= 10;
   };
 
   update = (): void => {

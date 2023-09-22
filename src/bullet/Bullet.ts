@@ -29,7 +29,7 @@ export default abstract class Bullet {
     this.canvas = document.createElement("canvas");
     this.ctx = this.canvas.getContext("2d");
     this.xPos = xPos;
-    this.yPos = yPos - this.height / 2;
+    this.yPos = yPos;
     this.speed = speed;
     this.damage = damage;
   }
@@ -46,5 +46,6 @@ export default abstract class Bullet {
 }
 
 export abstract class BulletFactory {
-  abstract getBullet: (player: Player, xPos: number, yPos: number) => Bullet;
+  abstract createBullet: (player: Player, xPos: number, yPos: number) => Bullet;
+  abstract playBulletSound: () => void;
 }

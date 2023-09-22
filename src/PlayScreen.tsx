@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { GameStatus } from "./App";
 import bg from "./photos/space.jpg";
 import Player from "./Player";
-import Meteor from "./Meteor";
+import Meteor, { MeteorFactory } from "./meteors/Meteor";
 import Bullet, { BulletFactory } from "./bullet/Bullet";
 import useSound from "use-sound";
 import bgm from "./sound/bgm.mp3";
@@ -12,6 +12,10 @@ import { Prompter } from "./Prompter";
 import { Gun } from "./weapons/Gun";
 import { Weapon } from "./weapons/Weapon";
 import { Browning1919MachineGunBulletFactory } from "./bullet/Browning1919MachineGunBullet";
+import Enemy from "./Enemy";
+import { EthanHeadFactory } from "./meteors/EthanHead";
+import { EnemyWeapon } from "./weapons/EnemyWeapon";
+import { MeteorGun } from "./weapons/MeteorGun";
 
 const bgmAudio = new Audio(bgm);
 
@@ -34,6 +38,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
   const prompter = new Prompter();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const enemyRef = useRef<Enemy | null>(null);
   const playerRef = useRef<Player | null>(null);
   const [playBulletSound] = useSound(bulletSfx);
 
@@ -53,6 +58,21 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         canvas.width = width;
         canvas.height = height;
       };
+
+      if (!enemyRef.current) {
+        const ethanHeadFactory: MeteorFactory = new EthanHeadFactory();
+
+        const meteorGun: MeteorGun = new MeteorGun(
+          "meteor-gun",
+          "meteor",
+          300,
+          ethanHeadFactory
+        );
+        const weapons: Map<string, EnemyWeapon> = new Map();
+        weapons.set(meteorGun.name, meteorGun);
+
+        enemyRef.current = new Enemy("Ethan", canvas, weapons);
+      }
 
       if (!playerRef.current) {
         const width = window.innerWidth;
@@ -94,6 +114,9 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
+      const enemy: Enemy | null = enemyRef.current;
+      if (!enemy) return;
+
       const player: Player | null = playerRef.current;
       if (!player) return;
 
@@ -103,27 +126,28 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
 
       let meteorIntervalId: NodeJS.Timeout | undefined = undefined;
 
-      const createBullets = (): void => {
-        const weapons = player.getWeapons();
-
-        // startFiring for all weapons
-        weapons.forEach((weapon) => {
+      const createMeteors = () => {
+        enemy.getWeapons().forEach((weapon) => {
           timeoutMap.set(
             weapon.name,
             setInterval(() => {
-              bullets.push(weapon.getBullet(player));
+              meteors.push(weapon.createMeteor(enemy));
+              console.log("meteor is created ", new Date().getTime());
             }, weapon.fireRate)
           );
         });
-
-        // const newBullet = player.getBullet();
-        // bullets.push(newBullet);
-        // playBulletSound();
       };
 
-      const createMeteor = () => {
-        meteors.push(Meteor.createMeteor(canvas.width));
-        console.log("meteor is created");
+      const createBullets = (): void => {
+        player.getWeapons().forEach((weapon) => {
+          timeoutMap.set(
+            weapon.name,
+            setInterval(() => {
+              bullets.push(weapon.createBullet(player));
+              weapon.playBulletSound();
+            }, weapon.fireRate)
+          );
+        });
       };
 
       setTimeout(async () => {
@@ -143,9 +167,8 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         await new Promise((r) => setTimeout(r, 1000));
         prompter.setMessage(null);
 
-        // bulletSoundIntervalId = setInterval(playBulletSound, 1000);
+        createMeteors();
         createBullets();
-        meteorIntervalId = setInterval(createMeteor, 1000);
       }, 0);
 
       const gameLoop = () => {
@@ -161,7 +184,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         player.update();
         player.draw(ctx);
 
-        meteors = meteors.filter((enemy) => !enemy.dead);
+        meteors = meteors.filter((meteor) => !meteor.dead);
         meteors.forEach((meteor) => {
           meteor.update(player, bullets);
           meteor.draw(ctx);

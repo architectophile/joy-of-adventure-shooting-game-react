@@ -7,7 +7,8 @@ export abstract class Weapon {
   name: string;
   type: WeaponType;
   fireRate: number;
-  abstract getBullet: (player: Player) => Bullet;
+  abstract createBullet: (player: Player) => Bullet;
+  abstract playBulletSound: () => void;
 
   constructor(name: string, type: WeaponType, fireRate: number) {
     this.name = name;

@@ -14,6 +14,13 @@ const App: React.FC = (): JSX.Element => {
   );
   const [gameStatus, setGameStatus] = useState<GameStatus>("intro");
 
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      // Check if the device width is less than or equal to 768px
+      goFullScreen();
+    }
+  }, []);
+
   const endGame = () => {
     setGameStatus("end");
   };
@@ -102,5 +109,39 @@ const App: React.FC = (): JSX.Element => {
 
   return <PlayScreen gameStatus={gameStatus} setGameStatus={setGameStatus} />;
 };
+
+function goFullScreen() {
+  const elem = document.documentElement as any;
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) {
+    /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) {
+    /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+}
+
+function exitFullScreen() {
+  const elem = document.documentElement as any;
+
+  if (elem.exitFullscreen) {
+    elem.exitFullscreen();
+  } else if (elem.mozCancelFullScreen) {
+    /* Firefox */
+    elem.mozCancelFullScreen();
+  } else if (elem.webkitExitFullscreen) {
+    /* Chrome, Safari & Opera */
+    elem.webkitExitFullscreen();
+  } else if (elem.msExitFullscreen) {
+    /* IE/Edge */
+    elem.msExitFullscreen();
+  }
+}
 
 export default App;

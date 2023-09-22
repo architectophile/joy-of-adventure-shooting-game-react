@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/stop-ethan-shooting-game-react/static/css/main.76a9c94e.css",
-    "main.js": "/stop-ethan-shooting-game-react/static/js/main.b4b78d33.js",
+    "main.js": "/stop-ethan-shooting-game-react/static/js/main.597284b7.js",
     "static/js/845.27165855.chunk.js": "/stop-ethan-shooting-game-react/static/js/845.27165855.chunk.js",
     "static/js/787.418d4183.chunk.js": "/stop-ethan-shooting-game-react/static/js/787.418d4183.chunk.js",
     "static/media/bgm.mp3": "/stop-ethan-shooting-game-react/static/media/bgm.45fd04c890038c50c1ec.mp3",
@@ -12,12 +12,12 @@
     "static/media/ARCADECLASSIC.TTF": "/stop-ethan-shooting-game-react/static/media/ARCADECLASSIC.8f36b955d042951fd3af.TTF",
     "index.html": "/stop-ethan-shooting-game-react/index.html",
     "main.76a9c94e.css.map": "/stop-ethan-shooting-game-react/static/css/main.76a9c94e.css.map",
-    "main.b4b78d33.js.map": "/stop-ethan-shooting-game-react/static/js/main.b4b78d33.js.map",
+    "main.597284b7.js.map": "/stop-ethan-shooting-game-react/static/js/main.597284b7.js.map",
     "845.27165855.chunk.js.map": "/stop-ethan-shooting-game-react/static/js/845.27165855.chunk.js.map",
     "787.418d4183.chunk.js.map": "/stop-ethan-shooting-game-react/static/js/787.418d4183.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.76a9c94e.css",
-    "static/js/main.b4b78d33.js"
+    "static/js/main.597284b7.js"
   ]
 }

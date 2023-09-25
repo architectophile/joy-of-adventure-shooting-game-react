@@ -5,8 +5,9 @@ interface MovingObject {
   yPos: number;
 }
 
-export const getRandomNumber = (min: number, max: number): number =>
-  Math.random() * max + min;
+export const getRandomNumber = (min: number, max: number): number => {
+  return Math.random() * (max - min) + min;
+};
 
 export const isTwoObjectsHit = (
   object1: MovingObject,

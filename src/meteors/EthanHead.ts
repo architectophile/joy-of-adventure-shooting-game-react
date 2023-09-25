@@ -1,16 +1,16 @@
 import Player from "../Player";
 import { getRandomNumber } from "../utils";
 import Meteor, { MeteorFactory } from "./Meteor";
-import img from "./photos/meteors.png";
+import ImageDefault from "../assets/images/nayoung-head.png";
+import ImageHit from "../assets/images/nayoung-head-hit.png";
 
 const METEOR_ETHAN_HEAD_NAME = "ethan-head";
-const METEOR_ETHAN_HEAD_WIDTH_RATE = 0.2;
-const METEOR_ETHAN_HEAD_HEIGTH_RATE = 0.2;
+const METEOR_ETHAN_HEAD_WIDTH_RATE = 0.35;
+const METEOR_ETHAN_HEAD_HEIGTH_RATE = 0.35;
 const METEOR_ETHAN_HEAD_X_SPEED_DEFAULT = 0.5;
-const METEOR_ETHAN_HEAD_Y_SPEED_DEFAULT = 2;
-const METEOR_ETHAN_HEAD_HEALTH = 10;
+const METEOR_ETHAN_HEAD_Y_SPEED_DEFAULT = 2.5;
+const METEOR_ETHAN_HEAD_HEALTH = 20;
 const METEOR_ETHAN_HEAD_FILL_STYLE_DEFAULT = "#2Fd11F";
-const METEOR_ETHAN_HEAD_FILL_STYLE_HIT_BY_BULLET = "#e1261F";
 const METEOR_ETHAN_HEAD_FILL_STYLE_HIT_BY_PLAYER = "#3145d1";
 
 export default class EthanHead extends Meteor {
@@ -36,7 +36,7 @@ export default class EthanHead extends Meteor {
       METEOR_ETHAN_HEAD_HEALTH
     );
     this.image = new Image();
-    this.image.src = "assets/images/ethan-head.png";
+    this.image.src = ImageDefault;
   }
 
   move = () => {
@@ -45,10 +45,10 @@ export default class EthanHead extends Meteor {
 
   hitByBullet = (): void => {
     if (this.bulletHitTimeout) clearTimeout(this.bulletHitTimeout);
-    this.color = METEOR_ETHAN_HEAD_FILL_STYLE_HIT_BY_BULLET;
+    this.image.src = ImageHit;
     this.ySpeed = METEOR_ETHAN_HEAD_Y_SPEED_DEFAULT * 0.2;
     this.bulletHitTimeout = setTimeout(async () => {
-      this.color = METEOR_ETHAN_HEAD_FILL_STYLE_DEFAULT;
+      this.image.src = ImageDefault;
       await new Promise((r) => setTimeout(r, 30));
       this.ySpeed = METEOR_ETHAN_HEAD_Y_SPEED_DEFAULT;
     }, 10);
@@ -67,17 +67,19 @@ export default class EthanHead extends Meteor {
   };
 
   draw = (ctx: CanvasRenderingContext2D) => {
-    ctx.beginPath();
-    ctx.arc(this.xPos, this.yPos, this.width / 2, 0, 2 * Math.PI);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-    // ctx.drawImage(
-    //   this.image,
-    //   this.xPos - METEOR_WIDTH / 2,
-    //   this.yPos - METEOR_HEIGHT / 2,
-    //   METEOR_WIDTH,
-    //   METEOR_HEIGHT
-    // );
+    // ctx.beginPath();
+    // ctx.arc(this.xPos, this.yPos, this.width / 2, 0, 2 * Math.PI);
+    // ctx.fillStyle = this.color;
+    // ctx.fill();
+    if (this.image.complete) {
+      ctx.drawImage(
+        this.image,
+        this.xPos - this.width / 2,
+        this.yPos - this.height / 2,
+        this.width,
+        this.height
+      );
+    }
   };
 }
 

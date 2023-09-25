@@ -113,18 +113,18 @@ const App: React.FC = (): JSX.Element => {
 function goFullScreen() {
   const elem = document.documentElement as any;
 
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.mozRequestFullScreen) {
-    /* Firefox */
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) {
-    /* Chrome, Safari & Opera */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    /* IE/Edge */
-    elem.msRequestFullscreen();
-  }
+  // if (elem.requestFullscreen) {
+  //   elem.requestFullscreen();
+  // } else if (elem.mozRequestFullScreen) {
+  //   /* Firefox */
+  //   elem.mozRequestFullScreen();
+  // } else if (elem.webkitRequestFullscreen) {
+  //   /* Chrome, Safari & Opera */
+  //   elem.webkitRequestFullscreen();
+  // } else if (elem.msRequestFullscreen) {
+  //   /* IE/Edge */
+  //   elem.msRequestFullscreen();
+  // }
 }
 
 function exitFullScreen() {

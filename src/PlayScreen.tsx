@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { GameStatus } from "./App";
-import bg from "./photos/space.jpg";
+import bg from "./assets/images/space.jpg";
 import Player from "./Player";
 import Meteor, { MeteorFactory } from "./meteors/Meteor";
 import Bullet, { BulletFactory } from "./bullet/Bullet";
@@ -16,6 +16,11 @@ import Enemy from "./Enemy";
 import { EthanHeadFactory } from "./meteors/EthanHead";
 import { EnemyWeapon } from "./weapons/EnemyWeapon";
 import { MeteorGun } from "./weapons/MeteorGun";
+import God from "./God";
+import { HeavenGate } from "./gates/HeavenGate";
+import { KimchiGate } from "./gates/KimchiGate";
+import Angel from "./angels/Angel";
+import { KimchiFactory } from "./angels/Kimchi";
 
 const bgmAudio = new Audio(bgm);
 
@@ -35,9 +40,11 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
   );
   let meteors: Meteor[] = [];
   let bullets: Bullet[] = [];
+  let angels: Angel[] = [];
   const prompter = new Prompter();
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const godRef = useRef<God | null>(null);
   const enemyRef = useRef<Enemy | null>(null);
   const playerRef = useRef<Player | null>(null);
   const [playBulletSound] = useSound(bulletSfx);
@@ -59,13 +66,28 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         canvas.height = height;
       };
 
+      if (!godRef.current) {
+        const kimchiFactory: KimchiFactory = new KimchiFactory();
+
+        const kimchiGate: KimchiGate = new KimchiGate(
+          "kimchi-gate",
+          "angel-tunnel",
+          3000,
+          kimchiFactory
+        );
+        const gates: Map<string, HeavenGate> = new Map();
+        gates.set(kimchiGate.name, kimchiGate);
+
+        godRef.current = new God("Jason", canvas, gates);
+      }
+
       if (!enemyRef.current) {
         const ethanHeadFactory: MeteorFactory = new EthanHeadFactory();
 
-        const meteorGun: MeteorGun = new MeteorGun(
+        const meteorGun: EnemyWeapon = new MeteorGun(
           "meteor-gun",
           "meteor",
-          300,
+          600,
           ethanHeadFactory
         );
         const weapons: Map<string, EnemyWeapon> = new Map();
@@ -114,6 +136,9 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
+      const god: God | null = godRef.current;
+      if (!god) return;
+
       const enemy: Enemy | null = enemyRef.current;
       if (!enemy) return;
 
@@ -150,6 +175,18 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         });
       };
 
+      const createAngels = (): void => {
+        god.getGates().forEach((gate) => {
+          timeoutMap.set(
+            gate.name,
+            setInterval(() => {
+              angels.push(gate.createAngel(god));
+              gate.playAngelSound();
+            }, gate.fireRate)
+          );
+        });
+      };
+
       setTimeout(async () => {
         // bgmAudio.play();
         await new Promise((r) => setTimeout(r, 1000));
@@ -169,6 +206,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
 
         createMeteors();
         createBullets();
+        createAngels();
       }, 0);
 
       const gameLoop = () => {
@@ -194,6 +232,12 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         bullets.forEach((bullet) => {
           bullet.update();
           bullet.draw(ctx);
+        });
+
+        angels = angels.filter((angel) => !angel.dead);
+        angels.forEach((angel) => {
+          angel.update(player);
+          angel.draw(ctx);
         });
 
         animationFrameId = requestAnimationFrame(gameLoop);

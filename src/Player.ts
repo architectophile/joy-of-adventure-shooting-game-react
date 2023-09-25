@@ -1,19 +1,19 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./App";
-import Bullet from "./bullet/Bullet";
 import Meteor from "./meteors/Meteor";
-import img from "./photos/player.png";
+import img from "./assets/images/nayoung-head.png";
 import { Weapon } from "./weapons/Weapon";
 
 const PLAYER_FILL_STYLE_DEFAULT = "#5F616F";
 const PLAYER_WIDTH_RATE = 0.2;
 const PLAYER_HEIGHT_RATE = 0.2;
+const PLAYER_MAX_HEALTH = 100;
 
 export class Player {
   name: string;
   width: number;
   height: number;
   dead: boolean = false;
-  health: number = 100;
+  health: number = PLAYER_MAX_HEALTH - 50;
   ammo: number = 100;
   score: number = 0;
   speed: number = 25;
@@ -91,6 +91,18 @@ export class Player {
     this.health -= 10;
   };
 
+  increaseHealth = (health: number): void => {
+    if (this.health + health > PLAYER_MAX_HEALTH) {
+      this.health = PLAYER_MAX_HEALTH;
+      return;
+    }
+    this.health += health;
+  };
+
+  yummy = (): void => {
+    console.log("yummy");
+  };
+
   update = (): void => {
     document.onkeydown = (e: KeyboardEvent) => {
       if (e.keyCode === 39) {
@@ -117,19 +129,19 @@ export class Player {
   };
 
   draw = (ctx: CanvasRenderingContext2D): void => {
-    ctx.beginPath();
-    ctx.arc(this.xPos, this.yPos, this.width / 2, 0, 2 * Math.PI);
-    ctx.fillStyle = PLAYER_FILL_STYLE_DEFAULT;
-    ctx.fill();
-    // if (this.image.complete) {
-    //   ctx.drawImage(
-    //     this.image,
-    //     this.xPos - this.width / 2,
-    //     this.yPos - this.height / 2,
-    //     this.width,
-    //     this.height
-    //   );
-    // }
+    // ctx.beginPath();
+    // ctx.arc(this.xPos, this.yPos, this.width / 2, 0, 2 * Math.PI);
+    // ctx.fillStyle = PLAYER_FILL_STYLE_DEFAULT;
+    // ctx.fill();
+    if (this.image.complete) {
+      ctx.drawImage(
+        this.image,
+        this.xPos - this.width / 2,
+        this.yPos - this.height / 2,
+        this.width,
+        this.height
+      );
+    }
 
     ctx.font = "18px ArcadeClassic";
     ctx.fillStyle = "white";

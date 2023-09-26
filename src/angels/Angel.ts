@@ -1,5 +1,4 @@
 import Player from "../Player";
-import Bullet from "../bullet/Bullet";
 import { isTwoObjectsHit } from "../utils";
 
 export type AngelType = "medicine" | "item";

@@ -1,18 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+import useSound from "use-sound";
 import PlayScreen from "./PlayScreen";
+import introBgm from "./sound/intro.mp3";
+import mainBgm from "./sound/main.mp3";
 
-export type GameStatus = "intro" | "start" | "end" | "pause";
+export type GameStatus = "splash" | "intro" | "start" | "end" | "pause";
 
 export const CANVAS_WIDTH = window.innerWidth;
 export const CANVAS_HEIGHT = window.innerHeight;
 
 const App: React.FC = (): JSX.Element => {
-  console.log(
-    "App.tsx width and height: ",
-    window.innerWidth,
-    window.innerHeight
-  );
-  const [gameStatus, setGameStatus] = useState<GameStatus>("intro");
+  const [gameStatus, setGameStatus] = useState<GameStatus>("splash");
+  const [playIntro, { stop: stopIntro }] = useSound(introBgm);
+  const [playMain, { stop: stopMain }] = useSound(mainBgm);
 
   useEffect(() => {
     if (window.innerWidth <= 768) {
@@ -23,13 +23,36 @@ const App: React.FC = (): JSX.Element => {
 
   const endGame = () => {
     setGameStatus("end");
+    stopMain();
   };
 
   const startGame = () => {
     setGameStatus("start");
+    stopIntro();
+    playMain();
   };
 
-  if (gameStatus === "intro") {
+  if (gameStatus === "splash") {
+    return (
+      <div
+        style={{
+          backgroundColor: "black",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100vw",
+          height: "100vh",
+          fontFamily: "Invasion2000, fallback, sans-serif",
+        }}
+        onClick={() => {
+          setGameStatus("intro");
+          playIntro();
+        }}
+      >
+        <span style={{ color: "white", fontSize: 32 }}>Click to Start</span>
+      </div>
+    );
+  } else if (gameStatus === "intro") {
     return (
       <div
         style={{
@@ -62,7 +85,7 @@ const App: React.FC = (): JSX.Element => {
             }}
             onClick={startGame}
           >
-            Start
+            Play
           </button>
         </div>
       </div>
@@ -127,21 +150,21 @@ function goFullScreen() {
   // }
 }
 
-function exitFullScreen() {
-  const elem = document.documentElement as any;
+// function exitFullScreen() {
+//   const elem = document.documentElement as any;
 
-  if (elem.exitFullscreen) {
-    elem.exitFullscreen();
-  } else if (elem.mozCancelFullScreen) {
-    /* Firefox */
-    elem.mozCancelFullScreen();
-  } else if (elem.webkitExitFullscreen) {
-    /* Chrome, Safari & Opera */
-    elem.webkitExitFullscreen();
-  } else if (elem.msExitFullscreen) {
-    /* IE/Edge */
-    elem.msExitFullscreen();
-  }
-}
+//   if (elem.exitFullscreen) {
+//     elem.exitFullscreen();
+//   } else if (elem.mozCancelFullScreen) {
+//     /* Firefox */
+//     elem.mozCancelFullScreen();
+//   } else if (elem.webkitExitFullscreen) {
+//     /* Chrome, Safari & Opera */
+//     elem.webkitExitFullscreen();
+//   } else if (elem.msExitFullscreen) {
+//     /* IE/Edge */
+//     elem.msExitFullscreen();
+//   }
+// }
 
 export default App;

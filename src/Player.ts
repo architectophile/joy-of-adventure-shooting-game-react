@@ -1,9 +1,8 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./App";
 import Meteor from "./meteors/Meteor";
-import img from "./assets/images/nayoung-head.png";
+import img from "./assets/images/joy-head.png";
 import { Weapon } from "./weapons/Weapon";
 
-const PLAYER_FILL_STYLE_DEFAULT = "#5F616F";
 const PLAYER_WIDTH_RATE = 0.2;
 const PLAYER_HEIGHT_RATE = 0.2;
 const PLAYER_MAX_HEALTH = 100;

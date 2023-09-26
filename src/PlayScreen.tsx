@@ -5,7 +5,6 @@ import Player from "./Player";
 import Meteor, { MeteorFactory } from "./meteors/Meteor";
 import Bullet, { BulletFactory } from "./bullet/Bullet";
 import useSound from "use-sound";
-import bgm from "./sound/bgm.mp3";
 
 import bulletSfx from "./sound/bullet-sound.mp3";
 import { Prompter } from "./Prompter";
@@ -21,8 +20,6 @@ import { HeavenGate } from "./gates/HeavenGate";
 import { KimchiGate } from "./gates/KimchiGate";
 import Angel from "./angels/Angel";
 import { KimchiFactory } from "./angels/Kimchi";
-
-const bgmAudio = new Audio(bgm);
 
 interface PlayScreenProps {
   gameStatus: GameStatus;
@@ -47,7 +44,6 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
   const godRef = useRef<God | null>(null);
   const enemyRef = useRef<Enemy | null>(null);
   const playerRef = useRef<Player | null>(null);
-  const [playBulletSound] = useSound(bulletSfx);
 
   useEffect(() => {
     if (gameStatus === "start") {
@@ -313,7 +309,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
           backgroundSize: "cover",
         }}
       />
-      <button
+      {/* <button
         onClick={() =>
           setGameStatus(gameStatus === "pause" ? "start" : "pause")
         }
@@ -325,7 +321,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         }}
       >
         {gameStatus === "pause" ? "Resume" : "Pause"}
-      </button>
+      </button> */}
     </div>
   );
 };

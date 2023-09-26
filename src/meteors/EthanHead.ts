@@ -1,8 +1,8 @@
 import Player from "../Player";
 import { getRandomNumber } from "../utils";
 import Meteor, { MeteorFactory } from "./Meteor";
-import ImageDefault from "../assets/images/nayoung-head.png";
-import ImageHit from "../assets/images/nayoung-head-hit.png";
+import ImageDefault from "../assets/images/ethan-head.png";
+import ImageHit from "../assets/images/ethan-head-hit.png";
 
 const METEOR_ETHAN_HEAD_NAME = "ethan-head";
 const METEOR_ETHAN_HEAD_WIDTH_RATE = 0.35;

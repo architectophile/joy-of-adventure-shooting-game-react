@@ -9,6 +9,7 @@ export abstract class Weapon {
   fireRate: number;
   abstract createBullet: (player: Player) => Bullet;
   abstract playBulletSound: () => void;
+  abstract increaseFireRate: () => void;
 
   constructor(name: string, type: WeaponType, fireRate: number) {
     this.name = name;

@@ -5,7 +5,6 @@ import Player from "./Player";
 import Meteor, { MeteorFactory } from "./meteors/Meteor";
 import Bullet, { BulletFactory } from "./bullet/Bullet";
 
-import bulletSfx from "./sound/bullet-sound.mp3";
 import { Prompter } from "./Prompter";
 import { Gun } from "./weapons/Gun";
 import { Weapon } from "./weapons/Weapon";
@@ -19,6 +18,7 @@ import { HeavenGate } from "./gates/HeavenGate";
 import { KimchiGate } from "./gates/KimchiGate";
 import Angel from "./angels/Angel";
 import { KimchiFactory } from "./angels/Kimchi";
+import { BaskinRobbinsCupFactory } from "./angels/BaskinRobbinsCup";
 
 interface PlayScreenProps {
   gameStatus: GameStatus;
@@ -70,8 +70,20 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
           3000,
           kimchiFactory
         );
+
+        const baskinRobbinsCupFactory: BaskinRobbinsCupFactory =
+          new BaskinRobbinsCupFactory();
+
+        const kimchiGate2: KimchiGate = new KimchiGate(
+          "br-cup-gate",
+          "angel-tunnel",
+          5500,
+          baskinRobbinsCupFactory
+        );
+
         const gates: Map<string, HeavenGate> = new Map();
         gates.set(kimchiGate.name, kimchiGate);
+        gates.set(kimchiGate2.name, kimchiGate2);
 
         godRef.current = new God("Jason", canvas, gates);
       }
@@ -82,7 +94,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         const meteorGun: EnemyWeapon = new MeteorGun(
           "meteor-gun",
           "meteor",
-          600,
+          2000,
           ethanHeadFactory
         );
         const weapons: Map<string, EnemyWeapon> = new Map();
@@ -102,7 +114,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         const gun: Gun = new Gun(
           "machine-gun",
           "gun",
-          60,
+          500,
           browning1919BulletFactory
         );
         const weapons: Map<string, Weapon> = new Map();
@@ -148,11 +160,19 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
 
       const createMeteors = () => {
         enemy.getWeapons().forEach((weapon) => {
+          const recursiveCreateMeteor = () => {
+            meteors.push(weapon.createMeteor(enemy));
+            console.log("meteor is created ", new Date().getTime());
+            weapon.playMeteorSound();
+            setTimeout(() => {
+              recursiveCreateMeteor();
+            }, weapon.fireRate);
+          };
+
           timeoutMap.set(
             weapon.name,
-            setInterval(() => {
-              meteors.push(weapon.createMeteor(enemy));
-              console.log("meteor is created ", new Date().getTime());
+            setTimeout(() => {
+              recursiveCreateMeteor();
             }, weapon.fireRate)
           );
         });
@@ -160,11 +180,18 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
 
       const createBullets = (): void => {
         player.getWeapons().forEach((weapon) => {
+          const recursiveCreateBullet = () => {
+            bullets.push(weapon.createBullet(player));
+            weapon.playBulletSound();
+            setTimeout(() => {
+              recursiveCreateBullet();
+            }, weapon.fireRate);
+          };
+
           timeoutMap.set(
             weapon.name,
-            setInterval(() => {
-              bullets.push(weapon.createBullet(player));
-              weapon.playBulletSound();
+            setTimeout(() => {
+              recursiveCreateBullet();
             }, weapon.fireRate)
           );
         });
@@ -172,11 +199,18 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
 
       const createAngels = (): void => {
         god.getGates().forEach((gate) => {
+          const recursiveCreateAngel = () => {
+            angels.push(gate.createAngel(god));
+            gate.playAngelSound();
+            setTimeout(() => {
+              recursiveCreateAngel();
+            }, gate.fireRate);
+          };
+
           timeoutMap.set(
             gate.name,
-            setInterval(() => {
-              angels.push(gate.createAngel(god));
-              gate.playAngelSound();
+            setTimeout(() => {
+              recursiveCreateAngel();
             }, gate.fireRate)
           );
         });

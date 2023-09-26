@@ -1,17 +1,17 @@
 import Player from "../Player";
 import Bullet, { BulletFactory } from "./Bullet";
 
-const BROWNING_1919_MACHINE_GUN_BULLET_WIDTH_RATE = 1.0;
-const BROWNING_1919_MACHINE_GUN_BULLET_HEIGHT_RATE = 0.5;
-const BROWNING_1919_MACHINE_GUN_BULLET_SPEED = 10;
-const BROWNING_1919_MACHINE_GUN_BULLET_DAMAGE = 2;
+const BROWNING_1919_MACHINE_GUN_BULLET_WIDTH_RATE = 0.474;
+const BROWNING_1919_MACHINE_GUN_BULLET_HEIGHT_RATE = 0.426;
+const BROWNING_1919_MACHINE_GUN_BULLET_SPEED = 11;
+const BROWNING_1919_MACHINE_GUN_BULLET_DAMAGE = 5;
 const BROWNING_1919_MACHINE_GUN_BULLET_FILL_STYLE = "#4241AF";
 const BROWNING_1919_MACHINE_GUN_BULLET_LINE_WIDTH = 1;
 
 export default class Browning1919MachineGunBullet extends Bullet {
   constructor(player: Player, xPos: number, yPos: number) {
     const width = player.width * BROWNING_1919_MACHINE_GUN_BULLET_WIDTH_RATE;
-    const height = player.height * BROWNING_1919_MACHINE_GUN_BULLET_HEIGHT_RATE;
+    const height = player.width * BROWNING_1919_MACHINE_GUN_BULLET_HEIGHT_RATE;
     super(
       width,
       height,
@@ -40,13 +40,15 @@ export default class Browning1919MachineGunBullet extends Bullet {
   }
 
   draw = (ctx: CanvasRenderingContext2D): void => {
-    ctx.drawImage(
-      this.canvas,
-      this.xPos - this.width / 2,
-      this.yPos - this.height / 2,
-      this.width,
-      this.height
-    );
+    if (this.image.complete) {
+      ctx.drawImage(
+        this.image,
+        this.xPos - this.width / 2,
+        this.yPos - this.height / 2,
+        this.width,
+        this.height
+      );
+    }
   };
 }
 

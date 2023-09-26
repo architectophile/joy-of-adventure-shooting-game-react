@@ -2,6 +2,8 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./App";
 import Meteor from "./meteors/Meteor";
 import img from "./assets/images/joy-head.png";
 import { Weapon } from "./weapons/Weapon";
+import Angel from "./angels/Angel";
+import { ANGEL_BR_CUP_NAME } from "./angels/BaskinRobbinsCup";
 
 const PLAYER_WIDTH_RATE = 0.2;
 const PLAYER_HEIGHT_RATE = 0.2;
@@ -34,7 +36,7 @@ export class Player {
     this.canvas = canvas;
     const { width, height } = canvas;
     this.width = width * PLAYER_WIDTH_RATE;
-    this.height = this.width;
+    this.height = width * PLAYER_HEIGHT_RATE;
     this.xPos = width / 2;
     this.yPos = height - 100;
 
@@ -98,6 +100,18 @@ export class Player {
     this.health += health;
   };
 
+  upgradeWeapon = (angel: Angel): void => {
+    switch (angel.name) {
+      case ANGEL_BR_CUP_NAME: {
+        const weapon = this.weapons.get("machine-gun");
+        if (weapon) {
+          weapon.increaseFireRate();
+        }
+        break;
+      }
+    }
+  };
+
   yummy = (): void => {
     console.log("yummy");
   };
@@ -143,18 +157,14 @@ export class Player {
     }
 
     ctx.font = "18px ArcadeClassic";
-    ctx.fillStyle = "white";
-    ctx.textAlign = "left";
-    ctx.fillText(
-      `Health: ${this.health}`,
-      CANVAS_WIDTH - 95,
-      CANVAS_HEIGHT - 15
-    );
-
-    ctx.font = "18px ArcadeClassic";
     ctx.fillStyle = "lightgreen";
     ctx.textAlign = "left";
     ctx.fillText(`Score: ${this.score}`, 8, 25);
+
+    ctx.font = "18px ArcadeClassic";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "left";
+    ctx.fillText(`Health: ${this.health}`, 8, 50);
   };
 }
 

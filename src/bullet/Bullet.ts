@@ -1,11 +1,7 @@
 import Player from "../Player";
+import img from "../assets/images/mom-is-alien.png";
 
 export default abstract class Bullet {
-  static readonly BULLET_RADIUS: number = 30;
-  static readonly BULLET_SPEED: number = 10;
-  static readonly FILL_STYLE: string = "#1F51FF";
-  static readonly LINE_WIDTH: number = 5;
-
   width: number;
   height: number;
   canvas: HTMLCanvasElement;
@@ -15,6 +11,7 @@ export default abstract class Bullet {
   speed: number;
   damage: number;
   dead: boolean = false;
+  image: HTMLImageElement;
 
   constructor(
     width: number,
@@ -32,6 +29,9 @@ export default abstract class Bullet {
     this.yPos = yPos;
     this.speed = speed;
     this.damage = damage;
+
+    this.image = new Image();
+    this.image.src = img;
   }
 
   update = (): void => {

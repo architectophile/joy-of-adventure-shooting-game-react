@@ -1,25 +1,26 @@
 {
   "files": {
     "main.css": "/stop-ethan-shooting-game-react/static/css/main.76a9c94e.css",
-    "main.js": "/stop-ethan-shooting-game-react/static/js/main.503b68b9.js",
+    "main.js": "/stop-ethan-shooting-game-react/static/js/main.7f8bf60d.js",
     "static/js/845.27165855.chunk.js": "/stop-ethan-shooting-game-react/static/js/845.27165855.chunk.js",
     "static/js/787.418d4183.chunk.js": "/stop-ethan-shooting-game-react/static/js/787.418d4183.chunk.js",
-    "static/media/bgm.mp3": "/stop-ethan-shooting-game-react/static/media/bgm.45fd04c890038c50c1ec.mp3",
+    "static/media/intro.mp3": "/stop-ethan-shooting-game-react/static/media/intro.41c286ed23d2c9c0122b.mp3",
+    "static/media/main.mp3": "/stop-ethan-shooting-game-react/static/media/main.4a625f1ab2b0994849ea.mp3",
     "static/media/kimchi.png": "/stop-ethan-shooting-game-react/static/media/kimchi.b81d049615337618db56.png",
-    "static/media/nayoung-head-hit.png": "/stop-ethan-shooting-game-react/static/media/nayoung-head-hit.5af6908419cc81cfea23.png",
-    "static/media/nayoung-head.png": "/stop-ethan-shooting-game-react/static/media/nayoung-head.cdf8c516cd8a54f3f3e0.png",
+    "static/media/ethan-head-hit.png": "/stop-ethan-shooting-game-react/static/media/ethan-head-hit.5af6908419cc81cfea23.png",
+    "static/media/ethan-head.png": "/stop-ethan-shooting-game-react/static/media/ethan-head.cdf8c516cd8a54f3f3e0.png",
+    "static/media/joy-head.png": "/stop-ethan-shooting-game-react/static/media/joy-head.cdf8c516cd8a54f3f3e0.png",
     "static/media/space.jpg": "/stop-ethan-shooting-game-react/static/media/space.033226b750f452a325ba.jpg",
     "static/media/INVASION2000.TTF": "/stop-ethan-shooting-game-react/static/media/INVASION2000.425fab9beb2bfdf395be.TTF",
-    "static/media/bullet-sound.mp3": "/stop-ethan-shooting-game-react/static/media/bullet-sound.6157ff2ff8e4898a2d5c.mp3",
     "static/media/ARCADECLASSIC.TTF": "/stop-ethan-shooting-game-react/static/media/ARCADECLASSIC.8f36b955d042951fd3af.TTF",
     "index.html": "/stop-ethan-shooting-game-react/index.html",
     "main.76a9c94e.css.map": "/stop-ethan-shooting-game-react/static/css/main.76a9c94e.css.map",
-    "main.503b68b9.js.map": "/stop-ethan-shooting-game-react/static/js/main.503b68b9.js.map",
+    "main.7f8bf60d.js.map": "/stop-ethan-shooting-game-react/static/js/main.7f8bf60d.js.map",
     "845.27165855.chunk.js.map": "/stop-ethan-shooting-game-react/static/js/845.27165855.chunk.js.map",
     "787.418d4183.chunk.js.map": "/stop-ethan-shooting-game-react/static/js/787.418d4183.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.76a9c94e.css",
-    "static/js/main.503b68b9.js"
+    "static/js/main.7f8bf60d.js"
   ]
 }

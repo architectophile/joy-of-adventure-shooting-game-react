@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/architectophile/joy-of-adventure-shooting-game-react/static/css/main.5aff278f.css",
-    "main.js": "/architectophile/joy-of-adventure-shooting-game-react/static/js/main.e22dea5d.js",
-    "static/js/845.27165855.chunk.js": "/architectophile/joy-of-adventure-shooting-game-react/static/js/845.27165855.chunk.js",
-    "static/js/787.418d4183.chunk.js": "/architectophile/joy-of-adventure-shooting-game-react/static/js/787.418d4183.chunk.js",
-    "static/media/intro.mp3": "/architectophile/joy-of-adventure-shooting-game-react/static/media/intro.41c286ed23d2c9c0122b.mp3",
-    "static/media/main.mp3": "/architectophile/joy-of-adventure-shooting-game-react/static/media/main.4a625f1ab2b0994849ea.mp3",
-    "static/media/kimchi.png": "/architectophile/joy-of-adventure-shooting-game-react/static/media/kimchi.b81d049615337618db56.png",
-    "static/media/ethan-head-hit.png": "/architectophile/joy-of-adventure-shooting-game-react/static/media/ethan-head-hit.5af6908419cc81cfea23.png",
-    "static/media/ethan-head.png": "/architectophile/joy-of-adventure-shooting-game-react/static/media/ethan-head.cdf8c516cd8a54f3f3e0.png",
-    "static/media/joy-head.png": "/architectophile/joy-of-adventure-shooting-game-react/static/media/joy-head.cdf8c516cd8a54f3f3e0.png",
-    "static/media/space.jpg": "/architectophile/joy-of-adventure-shooting-game-react/static/media/space.033226b750f452a325ba.jpg",
-    "static/media/INVASION2000.TTF": "/architectophile/joy-of-adventure-shooting-game-react/static/media/INVASION2000.425fab9beb2bfdf395be.TTF",
-    "static/media/ARCADECLASSIC.TTF": "/architectophile/joy-of-adventure-shooting-game-react/static/media/ARCADECLASSIC.8f36b955d042951fd3af.TTF",
-    "index.html": "/architectophile/joy-of-adventure-shooting-game-react/index.html",
-    "main.5aff278f.css.map": "/architectophile/joy-of-adventure-shooting-game-react/static/css/main.5aff278f.css.map",
-    "main.e22dea5d.js.map": "/architectophile/joy-of-adventure-shooting-game-react/static/js/main.e22dea5d.js.map",
-    "845.27165855.chunk.js.map": "/architectophile/joy-of-adventure-shooting-game-react/static/js/845.27165855.chunk.js.map",
-    "787.418d4183.chunk.js.map": "/architectophile/joy-of-adventure-shooting-game-react/static/js/787.418d4183.chunk.js.map"
+    "main.css": "/joy-of-adventure-shooting-game-react/static/css/main.c6df827e.css",
+    "main.js": "/joy-of-adventure-shooting-game-react/static/js/main.fddc57ca.js",
+    "static/js/845.27165855.chunk.js": "/joy-of-adventure-shooting-game-react/static/js/845.27165855.chunk.js",
+    "static/js/787.418d4183.chunk.js": "/joy-of-adventure-shooting-game-react/static/js/787.418d4183.chunk.js",
+    "static/media/intro.mp3": "/joy-of-adventure-shooting-game-react/static/media/intro.41c286ed23d2c9c0122b.mp3",
+    "static/media/main.mp3": "/joy-of-adventure-shooting-game-react/static/media/main.4a625f1ab2b0994849ea.mp3",
+    "static/media/kimchi.png": "/joy-of-adventure-shooting-game-react/static/media/kimchi.b81d049615337618db56.png",
+    "static/media/ethan-head-hit.png": "/joy-of-adventure-shooting-game-react/static/media/ethan-head-hit.5af6908419cc81cfea23.png",
+    "static/media/ethan-head.png": "/joy-of-adventure-shooting-game-react/static/media/ethan-head.cdf8c516cd8a54f3f3e0.png",
+    "static/media/joy-head.png": "/joy-of-adventure-shooting-game-react/static/media/joy-head.cdf8c516cd8a54f3f3e0.png",
+    "static/media/space.jpg": "/joy-of-adventure-shooting-game-react/static/media/space.033226b750f452a325ba.jpg",
+    "static/media/INVASION2000.TTF": "/joy-of-adventure-shooting-game-react/static/media/INVASION2000.425fab9beb2bfdf395be.TTF",
+    "static/media/ARCADECLASSIC.TTF": "/joy-of-adventure-shooting-game-react/static/media/ARCADECLASSIC.8f36b955d042951fd3af.TTF",
+    "index.html": "/joy-of-adventure-shooting-game-react/index.html",
+    "main.c6df827e.css.map": "/joy-of-adventure-shooting-game-react/static/css/main.c6df827e.css.map",
+    "main.fddc57ca.js.map": "/joy-of-adventure-shooting-game-react/static/js/main.fddc57ca.js.map",
+    "845.27165855.chunk.js.map": "/joy-of-adventure-shooting-game-react/static/js/845.27165855.chunk.js.map",
+    "787.418d4183.chunk.js.map": "/joy-of-adventure-shooting-game-react/static/js/787.418d4183.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5aff278f.css",
-    "static/js/main.e22dea5d.js"
+    "static/css/main.c6df827e.css",
+    "static/js/main.fddc57ca.js"
   ]
 }

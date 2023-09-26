@@ -4,7 +4,6 @@ import bg from "./assets/images/space.jpg";
 import Player from "./Player";
 import Meteor, { MeteorFactory } from "./meteors/Meteor";
 import Bullet, { BulletFactory } from "./bullet/Bullet";
-import useSound from "use-sound";
 
 import bulletSfx from "./sound/bullet-sound.mp3";
 import { Prompter } from "./Prompter";

@@ -2,7 +2,7 @@ import Player from "../Player";
 import Bullet, { BulletFactory } from "../bullet/Bullet";
 import { Weapon, WeaponType } from "./Weapon";
 
-const GUN_MAX_FIRE_RATE = 1000;
+const GUN_MAX_FIRE_RATE = 900;
 
 export class JinjerGun extends Weapon {
   bulletFactory: BulletFactory;

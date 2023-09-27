@@ -6,6 +6,8 @@ import mainBgm from "./sound/main.mp3";
 import introJoyImage from "./assets/images/intro-joy.png";
 import introEthanImage from "./assets/images/intro-ethan.png";
 import introJinjerImage from "./assets/images/intro-jinjer.png";
+import pkg from "../package.json";
+const { version } = pkg;
 
 export type GameStatus = "splash" | "intro" | "start" | "end" | "pause";
 
@@ -43,7 +45,7 @@ const App: React.FC = (): JSX.Element => {
         const newImage = new Image();
         newImage.src = introImageSrcs[index];
         setIntroImage(newImage);
-      }, 5000);
+      }, 4000);
     }
   }, [gameStatus]);
 
@@ -111,7 +113,6 @@ const App: React.FC = (): JSX.Element => {
               objectFit: "contain",
             }}
           />
-
           <span style={{ color: "white", fontSize: 30 }}>Joy of Adventure</span>
           <button
             style={{
@@ -127,6 +128,12 @@ const App: React.FC = (): JSX.Element => {
           >
             Play
           </button>
+          <span style={{ marginTop: 84, color: "white", fontSize: 16 }}>
+            Created by Jason
+          </span>
+          <span style={{ marginTop: 10, color: "white", fontSize: 16 }}>
+            Version: {version}
+          </span>
         </div>
       </div>
     );

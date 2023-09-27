@@ -128,7 +128,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         const jinjergun: JinjerGun = new JinjerGun(
           "jinjer-gun",
           "gun",
-          5000,
+          4800,
           jinjerHeadBulletFactory
         );
 
@@ -197,8 +197,8 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
       const increaseMeteorRate = () => {
         enemy.getWeapons().forEach((weapon) => {
           const recursiveIncreaseMeteorSpeed = () => {
-            if (weapon.fireRate >= 100) {
-              weapon.fireRate = weapon.fireRate - 100;
+            if (weapon.fireRate >= 200) {
+              weapon.fireRate = weapon.fireRate - 90;
               setTimeout(() => {
                 recursiveIncreaseMeteorSpeed();
               }, 5000);

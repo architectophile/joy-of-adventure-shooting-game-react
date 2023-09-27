@@ -197,8 +197,8 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
       const increaseMeteorRate = () => {
         enemy.getWeapons().forEach((weapon) => {
           const recursiveIncreaseMeteorSpeed = () => {
-            if (weapon.fireRate >= 200) {
-              weapon.fireRate = weapon.fireRate - 90;
+            if (weapon.fireRate >= 300) {
+              weapon.fireRate = weapon.fireRate - 80;
               setTimeout(() => {
                 recursiveIncreaseMeteorSpeed();
               }, 5000);

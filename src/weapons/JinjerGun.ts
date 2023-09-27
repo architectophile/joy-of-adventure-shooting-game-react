@@ -31,7 +31,7 @@ export class JinjerGun extends Weapon {
   };
 
   upgrade = (): void => {
-    const newFireRate = this.fireRate - 10;
+    const newFireRate = this.fireRate - 15;
     if (newFireRate > GUN_MAX_FIRE_RATE) {
       this.fireRate = newFireRate;
     } else {

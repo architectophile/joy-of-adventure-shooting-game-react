@@ -1,21 +1,21 @@
 import Player from "../Player";
 import Bullet, { BulletFactory } from "./Bullet";
-import bulletImage from "../assets/images/mom-is-alien.png";
+import bulletImage from "../assets/images/jinjer-head.png";
 
-const BROWNING_1919_MACHINE_GUN_BULLET_WIDTH_RATE = 0.474;
-const BROWNING_1919_MACHINE_GUN_BULLET_HEIGHT_RATE = 0.426;
-const BROWNING_1919_MACHINE_GUN_BULLET_SPEED = 12;
-const BROWNING_1919_MACHINE_GUN_BULLET_DAMAGE = 1;
-const BROWNING_1919_MACHINE_GUN_BULLET_HELATH = 1;
+const BROWNING_1919_MACHINE_GUN_BULLET_WIDTH_RATE = 1.5;
+const BROWNING_1919_MACHINE_GUN_BULLET_HEIGHT_RATE = 1.5;
+const BROWNING_1919_MACHINE_GUN_BULLET_SPEED = 7;
+const BROWNING_1919_MACHINE_GUN_BULLET_DAMAGE = 10;
+const JINJER_HEAD_BULLET_HEALTH = 30;
 const BROWNING_1919_MACHINE_GUN_BULLET_FILL_STYLE = "#4241AF";
 const BROWNING_1919_MACHINE_GUN_BULLET_LINE_WIDTH = 1;
-const image = new Image();
-image.src = bulletImage;
 
-export default class Browning1919MachineGunBullet extends Bullet {
+export default class JinjerHeadBullet extends Bullet {
   constructor(player: Player, xPos: number, yPos: number) {
     const width = player.width * BROWNING_1919_MACHINE_GUN_BULLET_WIDTH_RATE;
     const height = player.width * BROWNING_1919_MACHINE_GUN_BULLET_HEIGHT_RATE;
+    const image = new Image();
+    image.src = bulletImage;
     super(
       width,
       height,
@@ -23,7 +23,7 @@ export default class Browning1919MachineGunBullet extends Bullet {
       yPos - height / 2,
       BROWNING_1919_MACHINE_GUN_BULLET_SPEED,
       BROWNING_1919_MACHINE_GUN_BULLET_DAMAGE,
-      BROWNING_1919_MACHINE_GUN_BULLET_HELATH,
+      JINJER_HEAD_BULLET_HEALTH,
       image
     );
 
@@ -58,11 +58,11 @@ export default class Browning1919MachineGunBullet extends Bullet {
   };
 }
 
-export class Browning1919MachineGunBulletFactory extends BulletFactory {
+export class JinjerHeadBulletFactory extends BulletFactory {
   playBulletSound = (): void => {
-    // console.log("Browning1919MachineGunBulletFactory.playBulletSound");
+    // console.log("JinjerHeadBulletFactory.playBulletSound");
   };
   createBullet = (player: Player, xPos: number, yPos: number): Bullet => {
-    return new Browning1919MachineGunBullet(player, xPos, yPos);
+    return new JinjerHeadBullet(player, xPos, yPos);
   };
 }

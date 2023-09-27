@@ -65,6 +65,7 @@ export default abstract class Meteor {
         if (isTwoObjectsHit(bullet, this)) {
           player.hitMeteorByBullet(this);
           this.health -= bullet.damage;
+          bullet.health -= this.damage;
           if (!this.isStunned) {
             this.hitByBullet();
           }
@@ -72,7 +73,9 @@ export default abstract class Meteor {
             this.dead = true;
             player.killMeteorByBullet(this);
           }
-          bullet.dead = true;
+          if (bullet.health <= 0) {
+            bullet.dead = true;
+          }
         }
       });
 

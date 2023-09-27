@@ -1,6 +1,7 @@
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./App";
 import Meteor from "./meteors/Meteor";
 import img from "./assets/images/joy-head.png";
+import imgHit from "./assets/images/joy-head-hit.png";
 import { Weapon } from "./weapons/Weapon";
 import Angel from "./angels/Angel";
 import { ANGEL_BR_CUP_NAME } from "./angels/BaskinRobbinsCup";
@@ -24,6 +25,7 @@ export class Player {
   yPos: number;
   image: HTMLImageElement;
   isDragging: boolean = false;
+  isStunned = false;
   canvas: HTMLCanvasElement;
   private readonly weapons: Map<string, Weapon>;
 
@@ -38,7 +40,7 @@ export class Player {
     this.width = width * PLAYER_WIDTH_RATE;
     this.height = width * PLAYER_HEIGHT_RATE;
     this.xPos = width / 2;
-    this.yPos = height - 100;
+    this.yPos = height - 60;
 
     this.image = new Image();
     this.image.src = img;
@@ -77,6 +79,15 @@ export class Player {
   }
 
   hitByMeteor = (meteor: Meteor): void => {
+    if (this.isStunned) return;
+    this.isStunned = true;
+    this.health -= meteor.damage;
+    this.image.src = imgHit;
+    setTimeout(() => {
+      this.isStunned = false;
+      this.image.src = img;
+    }, 3000);
+
     console.log("hit by meteor");
   };
 
@@ -103,10 +114,9 @@ export class Player {
   upgradeWeapon = (angel: Angel): void => {
     switch (angel.name) {
       case ANGEL_BR_CUP_NAME: {
-        const weapon = this.weapons.get("machine-gun");
-        if (weapon) {
+        this.weapons.forEach((weapon) => {
           weapon.upgrade();
-        }
+        });
         break;
       }
     }

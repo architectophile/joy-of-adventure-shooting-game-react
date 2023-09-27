@@ -2,9 +2,9 @@ import Player from "../Player";
 import Bullet, { BulletFactory } from "../bullet/Bullet";
 import { Weapon, WeaponType } from "./Weapon";
 
-const GUN_MAX_FIRE_RATE = 30;
+const GUN_MAX_FIRE_RATE = 1000;
 
-export class Gun extends Weapon {
+export class JinjerGun extends Weapon {
   bulletFactory: BulletFactory;
 
   constructor(
@@ -31,7 +31,7 @@ export class Gun extends Weapon {
   };
 
   upgrade = (): void => {
-    const newFireRate = this.fireRate - 30;
+    const newFireRate = this.fireRate - 10;
     if (newFireRate > GUN_MAX_FIRE_RATE) {
       this.fireRate = newFireRate;
     } else {

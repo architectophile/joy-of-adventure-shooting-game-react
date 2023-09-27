@@ -19,6 +19,8 @@ import { KimchiGate } from "./gates/KimchiGate";
 import Angel from "./angels/Angel";
 import { KimchiFactory } from "./angels/Kimchi";
 import { BaskinRobbinsCupFactory } from "./angels/BaskinRobbinsCup";
+import { JinjerHeadBulletFactory } from "./bullet/JinjerHeadBullet";
+import { JinjerGun } from "./weapons/JinjerGun";
 
 interface PlayScreenProps {
   gameStatus: GameStatus;
@@ -69,7 +71,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         const kimchiGate: KimchiGate = new KimchiGate(
           "kimchi-gate",
           "angel-tunnel",
-          20000,
+          23000,
           kimchiFactory
         );
 
@@ -79,7 +81,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         const kimchiGate2: KimchiGate = new KimchiGate(
           "br-cup-gate",
           "angel-tunnel",
-          25000,
+          11000,
           baskinRobbinsCupFactory
         );
 
@@ -119,8 +121,20 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
           500,
           browning1919BulletFactory
         );
+
+        const jinjerHeadBulletFactory: BulletFactory =
+          new JinjerHeadBulletFactory();
+
+        const jinjergun: JinjerGun = new JinjerGun(
+          "jinjer-gun",
+          "gun",
+          5000,
+          jinjerHeadBulletFactory
+        );
+
         const weapons: Map<string, Weapon> = new Map();
         weapons.set(gun.name, gun);
+        weapons.set(jinjergun.name, jinjergun);
 
         playerRef.current = new Player("Joy", canvas, weapons);
       }
@@ -176,6 +190,26 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
             setTimeout(() => {
               recursiveCreateMeteor();
             }, weapon.fireRate)
+          );
+        });
+      };
+
+      const increaseMeteorRate = () => {
+        enemy.getWeapons().forEach((weapon) => {
+          const recursiveIncreaseMeteorSpeed = () => {
+            if (weapon.fireRate >= 100) {
+              weapon.fireRate = weapon.fireRate - 100;
+              setTimeout(() => {
+                recursiveIncreaseMeteorSpeed();
+              }, 5000);
+            }
+          };
+
+          timeoutMap.set(
+            weapon.name,
+            setTimeout(() => {
+              recursiveIncreaseMeteorSpeed();
+            }, 5000)
           );
         });
       };
@@ -236,6 +270,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         prompter.setMessage(null);
 
         createMeteors();
+        increaseMeteorRate();
         createBullets();
         createAngels();
       }, 0);

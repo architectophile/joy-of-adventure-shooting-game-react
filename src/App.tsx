@@ -3,23 +3,49 @@ import useSound from "use-sound";
 import PlayScreen from "./PlayScreen";
 import introBgm from "./sound/intro.mp3";
 import mainBgm from "./sound/main.mp3";
+import introJoyImage from "./assets/images/intro-joy.png";
+import introEthanImage from "./assets/images/intro-ethan.png";
+import introJinjerImage from "./assets/images/intro-jinjer.png";
 
 export type GameStatus = "splash" | "intro" | "start" | "end" | "pause";
 
 export const CANVAS_WIDTH = window.innerWidth;
 export const CANVAS_HEIGHT = window.innerHeight;
 
+const defaultImage = new Image();
+defaultImage.src = introJoyImage;
+
+const introImageSrcs = [introJoyImage, introEthanImage, introJinjerImage];
+
+let index = 0;
+
 const App: React.FC = (): JSX.Element => {
   const [gameStatus, setGameStatus] = useState<GameStatus>("splash");
   const [playIntro, { stop: stopIntro }] = useSound(introBgm);
   const [playMain, { stop: stopMain }] = useSound(mainBgm);
+  const [introImage, setIntroImage] = useState<HTMLImageElement>(new Image());
 
   useEffect(() => {
     if (window.innerWidth <= 768) {
       // Check if the device width is less than or equal to 768px
       goFullScreen();
     }
+    introImage.src = introImageSrcs[index];
   }, []);
+
+  useEffect(() => {
+    if (gameStatus === "intro") {
+      setInterval(() => {
+        index = index + 1;
+        if (index >= introImageSrcs.length) {
+          index = 0;
+        }
+        const newImage = new Image();
+        newImage.src = introImageSrcs[index];
+        setIntroImage(newImage);
+      }, 5000);
+    }
+  }, [gameStatus]);
 
   const endGame = () => {
     setGameStatus("end");
@@ -75,6 +101,17 @@ const App: React.FC = (): JSX.Element => {
             fontFamily: "Invasion2000, fallback, sans-serif",
           }}
         >
+          <img
+            src={introImage.src}
+            alt="Intro Character"
+            style={{
+              marginBottom: "20px",
+              width: "84%",
+              height: "84%",
+              objectFit: "contain",
+            }}
+          />
+
           <span style={{ color: "white", fontSize: 30 }}>Joy of Adventure</span>
           <button
             style={{

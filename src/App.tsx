@@ -45,7 +45,7 @@ const App: React.FC = (): JSX.Element => {
         const newImage = new Image();
         newImage.src = introImageSrcs[index];
         setIntroImage(newImage);
-      }, 4000);
+      }, 3000);
     }
   }, [gameStatus]);
 

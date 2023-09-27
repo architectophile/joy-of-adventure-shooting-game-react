@@ -31,7 +31,7 @@ export class Gun extends Weapon {
   };
 
   upgrade = (): void => {
-    const newFireRate = this.fireRate - 35;
+    const newFireRate = this.fireRate - 40;
     if (newFireRate > GUN_MAX_FIRE_RATE) {
       this.fireRate = newFireRate;
     } else {

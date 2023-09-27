@@ -1,6 +1,6 @@
 {
   "name": "joy-of-adventure-shooting-game-react",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "private": true,
   "scripts": {
     "predeploy": "npm run build",

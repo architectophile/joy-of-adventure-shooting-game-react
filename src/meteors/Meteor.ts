@@ -14,6 +14,7 @@ export default abstract class Meteor {
   bulletHitTimeout: NodeJS.Timeout | null = null;
   playerHitTimeout: NodeJS.Timeout | null = null;
   isStunned: boolean = false;
+  damage: number;
 
   constructor(
     name: string,
@@ -22,7 +23,8 @@ export default abstract class Meteor {
     canvas: HTMLCanvasElement,
     xPos: number,
     yPos: number,
-    health: number
+    health: number,
+    damage: number
   ) {
     this.name = name;
     this.width = width;
@@ -31,6 +33,7 @@ export default abstract class Meteor {
     this.xPos = xPos;
     this.yPos = yPos;
     this.health = health;
+    this.damage = damage;
   }
 
   abstract hitByBullet: () => void;
@@ -52,6 +55,7 @@ export default abstract class Meteor {
     // Check if meteor is out of screen
     if (!this.dead && this.isOutOfScreen()) {
       this.dead = true;
+      player.deductHealth(this.damage);
       // sound.play('passing');
     }
 

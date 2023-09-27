@@ -75,11 +75,14 @@ const App: React.FC = (): JSX.Element => {
             fontFamily: "Invasion2000, fallback, sans-serif",
           }}
         >
-          <span style={{ color: "white", fontSize: 32 }}>Joy of Adventure</span>
+          <span style={{ color: "white", fontSize: 30 }}>Joy of Adventure</span>
           <button
             style={{
               marginTop: 32,
-              padding: 10,
+              paddingLeft: 30,
+              paddingRight: 30,
+              paddingTop: 10,
+              paddingBottom: 10,
               fontSize: 32,
               fontFamily: "ArcadeClassic, fallback, sans-serif",
             }}
@@ -114,7 +117,7 @@ const App: React.FC = (): JSX.Element => {
           }}
         >
           <span style={{ color: "white", fontSize: 42 }}>Game Over</span>
-          <button
+          {/* <button
             style={{
               marginTop: 32,
               padding: 10,
@@ -124,13 +127,19 @@ const App: React.FC = (): JSX.Element => {
             onClick={startGame}
           >
             Restart
-          </button>
+          </button> */}
         </div>
       </div>
     );
   }
 
-  return <PlayScreen gameStatus={gameStatus} setGameStatus={setGameStatus} />;
+  return (
+    <PlayScreen
+      gameStatus={gameStatus}
+      setGameStatus={setGameStatus}
+      endGame={endGame}
+    />
+  );
 };
 
 function goFullScreen() {

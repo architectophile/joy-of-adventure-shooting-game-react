@@ -88,8 +88,8 @@ export class Player {
     this.score += 10;
   };
 
-  deductHealth = (): void => {
-    this.health -= 10;
+  deductHealth = (health: number): void => {
+    this.health -= health;
   };
 
   increaseHealth = (health: number): void => {
@@ -105,7 +105,7 @@ export class Player {
       case ANGEL_BR_CUP_NAME: {
         const weapon = this.weapons.get("machine-gun");
         if (weapon) {
-          weapon.increaseFireRate();
+          weapon.upgrade();
         }
         break;
       }
@@ -137,7 +137,6 @@ export class Player {
 
     if (this.health <= 0) {
       this.dead = true;
-      gameOver(this.score);
     }
   };
 
@@ -159,24 +158,13 @@ export class Player {
     ctx.font = "18px ArcadeClassic";
     ctx.fillStyle = "lightgreen";
     ctx.textAlign = "left";
-    ctx.fillText(`Score: ${this.score}`, 8, 25);
+    ctx.fillText(`Score: ${this.score}`, 10, 25);
 
     ctx.font = "18px ArcadeClassic";
     ctx.fillStyle = "white";
     ctx.textAlign = "left";
-    ctx.fillText(`Health: ${this.health}`, 8, 50);
+    ctx.fillText(`Health: ${this.health}`, 10, 50);
   };
-}
-
-function gameOver(score: number): void {
-  document.body.innerHTML = `
-  <center>
-  <br/>
-  <h2>Game Over!</h2>
-  <p>Your Score: ${score}</p>
-  <button class="btn btn-danger mt-2" onClick="location.reload()">Again</button>
-  </center>
-  `;
 }
 
 export default Player;

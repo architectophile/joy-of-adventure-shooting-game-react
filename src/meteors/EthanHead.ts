@@ -4,13 +4,14 @@ import ImageDefault from "../assets/images/ethan-head.png";
 import ImageHit from "../assets/images/ethan-head-hit.png";
 
 const METEOR_ETHAN_HEAD_NAME = "ethan-head";
-const METEOR_ETHAN_HEAD_WIDTH_RATE = 0.2;
-const METEOR_ETHAN_HEAD_HEIGTH_RATE = 0.2;
+const METEOR_ETHAN_HEAD_WIDTH_RATE = 0.3;
+const METEOR_ETHAN_HEAD_HEIGTH_RATE = 0.3;
 const METEOR_ETHAN_HEAD_X_SPEED_DEFAULT = 0.5;
 const METEOR_ETHAN_HEAD_Y_SPEED_DEFAULT = 1.5;
-const METEOR_ETHAN_HEAD_HEALTH = 20;
+const METEOR_ETHAN_HEAD_HEALTH = 5;
 const METEOR_ETHAN_HEAD_FILL_STYLE_DEFAULT = "#2Fd11F";
 const METEOR_ETHAN_HEAD_FILL_STYLE_HIT_BY_PLAYER = "#3145d1";
+const METEOR_ETHAN_HEAD_DAMAGE = 10;
 
 export default class EthanHead extends Meteor {
   image = new Image();
@@ -32,7 +33,8 @@ export default class EthanHead extends Meteor {
       canvas,
       xPos,
       yPos,
-      METEOR_ETHAN_HEAD_HEALTH
+      METEOR_ETHAN_HEAD_HEALTH,
+      METEOR_ETHAN_HEAD_DAMAGE
     );
     this.image = new Image();
     this.image.src = ImageDefault;

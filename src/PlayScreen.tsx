@@ -23,11 +23,13 @@ import { BaskinRobbinsCupFactory } from "./angels/BaskinRobbinsCup";
 interface PlayScreenProps {
   gameStatus: GameStatus;
   setGameStatus: React.Dispatch<React.SetStateAction<GameStatus>>;
+  endGame: () => void;
 }
 
 const PlayScreen: React.FC<PlayScreenProps> = ({
   gameStatus,
   setGameStatus,
+  endGame,
 }: PlayScreenProps): JSX.Element => {
   console.log(
     "PlayScreen width and height: ",
@@ -67,7 +69,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         const kimchiGate: KimchiGate = new KimchiGate(
           "kimchi-gate",
           "angel-tunnel",
-          3000,
+          20000,
           kimchiFactory
         );
 
@@ -77,7 +79,7 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         const kimchiGate2: KimchiGate = new KimchiGate(
           "br-cup-gate",
           "angel-tunnel",
-          5500,
+          25000,
           baskinRobbinsCupFactory
         );
 
@@ -250,6 +252,10 @@ const PlayScreen: React.FC<PlayScreenProps> = ({
         prompter.draw(ctx);
         player.update();
         player.draw(ctx);
+
+        if (player.dead) {
+          endGame();
+        }
 
         meteors = meteors.filter((meteor) => !meteor.dead);
         meteors.forEach((meteor) => {
